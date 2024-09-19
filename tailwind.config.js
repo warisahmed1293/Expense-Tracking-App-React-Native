@@ -11,6 +11,7 @@ module.exports = {
         TRANS_GREEN: "#25A969",
         PRIMARY_BLACK: "#222222",
         PRIMARY_GREY: "#666666",
+        SECONDARY_WHITE: "#ffffff",
       },
     },
   },

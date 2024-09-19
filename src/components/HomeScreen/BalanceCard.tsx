@@ -1,34 +1,48 @@
 import { StyleSheet, View } from "react-native";
 import React from "react";
-import Text from "../Text";
 import Icon from "../Icon";
+import { StyledText } from "../styledComponents";
 
-const BalanceCard = () => {
+interface BalanceCardProps {
+    totalBalance: number;
+    income: number;
+    expense: number;
+}
+
+const formatNumber = (value: number) => {
+    return value.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+};
+
+const BalanceCard = ({ totalBalance, income, expense }: BalanceCardProps) => {
     return (
-        <View className="bg-DARK_GREEN w-[335px] h-[225px] flex-1 flex-row justify-between items-start rounded-3xl ">
+        <View className="bg-DARK_GREEN w-[335px] h-[225px] flex-1 flex-row justify-between items-start rounded-3xl">
             <View className="flex flex-col justify-between py-5 px-2">
-                <View className="flex items-center">
-                    <Text className="text-white text-2xl">Total Balance</Text>
-                    <Text className="text-white text-4xl font-bold">$ 2,548.00</Text>
+                <View className="">
+                    <StyledText color="white" fontSize="24px" fontWeight="bold">Total Balance</StyledText>
+                    <StyledText color="white" fontSize="30px" fontWeight="bold">{formatNumber(totalBalance)}</StyledText>
                 </View>
-                <View className="flex items-center">
-                    <View className="flex items-center">
-                        <Icon name="ArrowDownIcon" className="text-white w-6 h-6" type="solid" />
-                        <Text className="text-white text-base ml-2">Income</Text>
+                <View className="">
+                    <View className="">
+                        <View style={styles.backgroudColor} className="w-8 h-8 rounded-full flex items-center justify-center">
+                            <Icon name="ArrowDownIcon" color="white" type="solid" size={18} />
+                        </View>
+                        <StyledText color="white">Income</StyledText>
                     </View>
-                    <Text className="text-white text-3xl font-bold">$ 1,840.00</Text>
+                    <StyledText color="white" fontWeight="bold" fontSize="20px">{formatNumber(income)}</StyledText>
                 </View>
             </View>
             <View className="flex flex-col justify-between py-5 px-4">
                 <View className="flex items-center">
-                    <Icon name="EllipsisHorizontalIcon" className="text-white w-8 h-8" type="solid" />
+                    <Icon name="EllipsisHorizontalIcon" color="white" type="solid" />
                 </View>
                 <View className="flex items-center">
                     <View className="flex items-center">
-                        <Icon name="ArrowUpIcon" className="text-white w-6 h-6" type="solid" />
-                        <Text className="text-white text-base ml-2">Expenses</Text>
+                        <View style={styles.backgroudColor} className="w-8 h-8 rounded-full flex items-center justify-center">
+                            <Icon name="ArrowUpIcon" color="white" type="solid" size={18} />
+                        </View>
+                        <StyledText color="white">Expenses</StyledText>
                     </View>
-                    <Text className="text-white text-2xl font-bold">$ 284.00</Text>
+                    <StyledText color="white" fontWeight="bold" fontSize="20px">{formatNumber(expense)}</StyledText>
                 </View>
             </View>
         </View>
@@ -37,4 +51,8 @@ const BalanceCard = () => {
 
 export default BalanceCard;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+    backgroudColor: {
+        backgroundColor: "rgba(255, 255, 255, 0.25)",
+    },
+});
