@@ -2,23 +2,34 @@ import styled from "styled-components/native";
 import { View, Text, ScrollView, TouchableOpacity, ViewProps, TextProps, TouchableOpacityProps, ScrollViewProps } from "react-native";
 
 interface ContainerProps extends ViewProps {
-    bgColor?: string;
-    className?: string;
-    padding?: string;
+  bgColor?: string;
+  className?: string;
+  padding?: string;
+  flex?: number;
+  borderRadius?: string;
+  margin?: string;
+  flexDirection?: "row" | "column";
+  width?: string;
+  height?: string;
 }
 
 export const Container = styled(View) <ContainerProps>`
   flex: 1;
+  flex-direction: ${({ flexDirection }) => flexDirection || "row"};
+  border-radius: ${({ borderRadius }) => borderRadius || "0px"};
   padding: ${({ padding }) => padding || "0px"};
   background-color: ${({ bgColor }) => bgColor || "white"};
   className: ${({ className }) => className || ""};
+  margin: ${({ margin }) => margin || "0px"};
+  width: ${({ width }) => width || "100%"};
+  height: ${({ height }) => height || "auto"};
 `;
 
 interface DisplayFlexProps extends ViewProps {
-    direction?: "row" | "column";
-    alignItems?: "flex-start" | "center" | "flex-end" | "stretch";
-    justifyContent?: "flex-start" | "center" | "flex-end" | "space-between" | "space-around";
-    className?: string;
+  direction?: "row" | "column";
+  alignItems?: "flex-start" | "center" | "flex-end" | "stretch";
+  justifyContent?: "flex-start" | "center" | "flex-end" | "space-between" | "space-around";
+  className?: string;
 }
 
 export const DisplayFlex = styled(View) <DisplayFlexProps>`
@@ -30,11 +41,11 @@ export const DisplayFlex = styled(View) <DisplayFlexProps>`
 `;
 
 interface ViewBoxProps extends ViewProps {
-    padding?: string;
-    margin?: string;
-    bgColor?: string;
-    borderRadius?: string;
-    className?: string;
+  padding?: string;
+  margin?: string;
+  bgColor?: string;
+  borderRadius?: string;
+  className?: string;
 }
 
 export const ViewBox = styled(View) <ViewBoxProps>`
@@ -46,11 +57,11 @@ export const ViewBox = styled(View) <ViewBoxProps>`
 `;
 
 interface StyledTextProps extends TextProps {
-    fontSize?: string;
-    color?: string;
-    textAlign?: "left" | "center" | "right";
-    fontWeight?: string;
-    className?: string;
+  fontSize?: string;
+  color?: string;
+  textAlign?: "left" | "center" | "right";
+  fontWeight?: string;
+  className?: string;
 }
 
 export const StyledText = styled(Text) <StyledTextProps>`
@@ -62,10 +73,10 @@ export const StyledText = styled(Text) <StyledTextProps>`
 `;
 
 interface ButtonProps extends TouchableOpacityProps {
-    bgColor?: string;
-    padding?: string;
-    className?: string;
-    borderRadius?: string;
+  bgColor?: string;
+  padding?: string;
+  className?: string;
+  borderRadius?: string;
 }
 
 export const Button = styled(TouchableOpacity) <ButtonProps>`
@@ -78,7 +89,7 @@ export const Button = styled(TouchableOpacity) <ButtonProps>`
 `;
 
 interface ScrollContainerProps extends ScrollViewProps {
-    padding?: string;
+  padding?: string;
 }
 
 export const ScrollContainer = styled(ScrollView) <ScrollContainerProps>`

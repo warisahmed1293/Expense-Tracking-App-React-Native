@@ -6,7 +6,7 @@ module.exports = {
       colors: {
         ICON_GREEN: "#408782",
         TEXT_GREEN: "#438883",
-        DARK_GREEN: "#2F7E79",
+        DARK_GREEN: "2f7e79",
         TRANS_RED: "#F95B51",
         TRANS_GREEN: "#25A969",
         PRIMARY_BLACK: "#222222",
