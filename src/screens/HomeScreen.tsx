@@ -3,6 +3,7 @@ import { ImageBackground, ScrollView, TouchableOpacity, View } from "react-nativ
 import Icon from "../components/Icon";
 import BalanceCard from "../components/HomeScreen/BalanceCard";
 import { DisplayFlex, StyledText } from "../components/styledComponents";
+import TransactionsHistory from "../components/HomeScreen/TransactionsHistory";
 
 const getGreeting = () => {
     const currentHour = new Date().getHours();
@@ -58,6 +59,9 @@ const HomeScreen: React.FC = () => {
                             <BalanceCard totalBalance={2548} income={1840} expense={284} />
                         </View>
                     </ImageBackground>
+                </DisplayFlex>
+                <DisplayFlex justifyContent="space-between" className="px-6 top-32">
+                    <TransactionsHistory />
                 </DisplayFlex>
             </ScrollView>
         </>
