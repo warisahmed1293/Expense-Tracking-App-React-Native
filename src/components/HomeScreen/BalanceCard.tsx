@@ -1,7 +1,7 @@
-import { StyleSheet, Touchable, TouchableOpacity, View } from "react-native";
+import { StyleSheet, TouchableOpacity, View } from "react-native";
 import React from "react";
 import Icon from "../Icon";
-import { Container, DisplayFlex, StyledText } from "../styledComponents";
+import { Container, StyledText } from "../styledComponents";
 import COLORS from "../../constant/colors";
 
 interface BalanceCardProps {

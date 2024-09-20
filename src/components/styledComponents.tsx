@@ -30,11 +30,12 @@ interface DisplayFlexProps extends ViewProps {
   alignItems?: "flex-start" | "center" | "flex-end" | "stretch";
   justifyContent?: "flex-start" | "center" | "flex-end" | "space-between" | "space-around";
   className?: string;
+  flex?: number;
 }
 
 export const DisplayFlex = styled(View) <DisplayFlexProps>`
-  flex: 1;
-  flex-direction: ${({ direction }) => direction || "row"};
+  flex: ${({ flex }) => flex || null};
+  flex-direction: ${({ direction }) => direction || null};
   align-items: ${({ alignItems }) => alignItems || "center"};
   justify-content: ${({ justifyContent }) => justifyContent || "center"};
   className: ${({ className }) => className || ""};
@@ -51,7 +52,7 @@ interface ViewBoxProps extends ViewProps {
 export const ViewBox = styled(View) <ViewBoxProps>`
   padding: ${({ padding }) => padding || "10px"};
   margin: ${({ margin }) => margin || "10px"};
-  background-color: ${({ bgColor }) => bgColor || "transparent"};
+  background-color: ${({ bgColor }) => bgColor || null};
   border-radius: ${({ borderRadius }) => borderRadius || "0px"};
   className: ${({ className }) => className || ""};
 `;

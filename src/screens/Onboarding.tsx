@@ -1,8 +1,13 @@
 import { Image, ImageBackground, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import React from "react";
 import { bgScreen, menImage } from "../constant/images";
+import { NavigationProp } from "@react-navigation/native";
 
-const Onboarding = ({ navigation }) => {
+type OnboardingProps = {
+    navigation: NavigationProp<any>;
+};
+
+const Onboarding: React.FC<OnboardingProps> = ({ navigation }) => {
     return (
         <View className="flex-1 bg-white">
             <ImageBackground source={bgScreen} resizeMode="contain" className="flex-1 justify-center items-center">

@@ -4,6 +4,7 @@ import Icon from "../components/Icon";
 import BalanceCard from "../components/HomeScreen/BalanceCard";
 import { DisplayFlex, StyledText } from "../components/styledComponents";
 import TransactionsHistory from "../components/HomeScreen/TransactionsHistory";
+import SendAgainTransictions from "../components/HomeScreen/SendAgainTransictions";
 
 const getGreeting = () => {
     const currentHour = new Date().getHours();
@@ -19,12 +20,12 @@ const getGreeting = () => {
 };
 
 const HomeScreen: React.FC = () => {
-    const [hasNotification, setHasNotification] = useState<boolean>(true);
+    const [hasNotification] = useState<boolean>(true);
     const greeting: string = getGreeting();
 
     return (
         <>
-            <ScrollView>
+            <ScrollView showsVerticalScrollIndicator={false} className="bg-white">
                 <DisplayFlex>
                     <ImageBackground
                         source={require("../assets/top_section.png")}
@@ -55,14 +56,17 @@ const HomeScreen: React.FC = () => {
                                 )}
                             </TouchableOpacity>
                         </DisplayFlex>
-                        <View className="absolute bottom-[-100] w-[100%] px-6 ">
+                        <View className="absolute bottom-[-80] w-[100%] px-5 ">
                             <BalanceCard totalBalance={2548} income={1840} expense={284} />
                         </View>
                     </ImageBackground>
                 </DisplayFlex>
-                <DisplayFlex justifyContent="space-between" className="px-6 top-32">
+                <View className="px-5 top-24" >
                     <TransactionsHistory />
-                </DisplayFlex>
+                </View>
+                <View className="px-5 top-24 pb-32">
+                    <SendAgainTransictions />
+                </View>
             </ScrollView>
         </>
     );

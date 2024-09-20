@@ -1,4 +1,4 @@
-import { Platform, StatusBar, StyleSheet } from "react-native";
+import { Platform, StatusBar } from "react-native";
 import React, { useEffect } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import AppNavigator from "./src/navigation/Navigation";
