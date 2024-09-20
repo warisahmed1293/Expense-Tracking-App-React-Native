@@ -1,7 +1,7 @@
 // constants/icons.ts
-import * as SolidIcons from 'react-native-heroicons/solid';
-import * as OutlineIcons from 'react-native-heroicons/outline';
-import {IconsMap} from '../components/types';
+import * as SolidIcons from "react-native-heroicons/solid";
+import * as OutlineIcons from "react-native-heroicons/outline";
+import {IconsMap} from "../components/types";
 
 export const ICONS: IconsMap = {
   Home: {solid: SolidIcons.HomeIcon, outline: OutlineIcons.HomeIcon},
@@ -11,4 +11,5 @@ export const ICONS: IconsMap = {
   },
   Wallet: {solid: SolidIcons.WalletIcon, outline: OutlineIcons.WalletIcon},
   Profile: {solid: SolidIcons.UserIcon, outline: OutlineIcons.UserIcon},
+  ExpenseScreen: {solid: SolidIcons.PlusCircleIcon, outline: OutlineIcons.PlusCircleIcon},
 };

@@ -45,7 +45,7 @@ const HomeScreen: React.FC<{ route: any }> = ({ route }) => {
                                     {greeting},
                                 </StyledText>
                                 <StyledText fontSize="26px" fontWeight="bold" color="white">
-                                    {userName}
+                                    Waris Ahmed
                                 </StyledText>
                             </View>
 

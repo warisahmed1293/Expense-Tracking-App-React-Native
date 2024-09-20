@@ -10,11 +10,21 @@ import Onboarding from "../screens/Onboarding";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import SignInScreen from "../authentication/LoginUser";
 import RegisterScreen from "../authentication/RegistrationUser";
+import ExpenseScreen from "../screens/ExpenseScreen";
+import { GestureResponderEvent, StyleSheet, TouchableOpacity, View } from "react-native";
+import Icon from "../components/Icon";
 
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
+const CustomPlusButton: React.FC<{ onPress: (event: GestureResponderEvent) => void }> = ({ onPress }) => (
+    <TouchableOpacity style={styles.plusButton} onPress={onPress}>
+        <View>
+            <Icon type="solid" name="PlusCircleIcon" color="#29756F" size={60} />
+        </View>
+    </TouchableOpacity>
+);
 
 
 const Navigation = () => {
@@ -34,6 +44,10 @@ const Navigation = () => {
         >
             <Tab.Screen name="Home" component={HomeScreen} />
             <Tab.Screen name="Statistics" component={StatisticsScreen} />
+            <Tab.Screen name="ExpenseScreen" component={ExpenseScreen} options={{
+                tabBarButton: (props) => <CustomPlusButton {...props} onPress={props.onPress || (() => { })} />,
+            }} />
+
             <Tab.Screen name="Wallet" component={WalletScreen} />
             <Tab.Screen name="Profile" component={ProfileScreen} />
 
@@ -51,6 +65,7 @@ const AppNavigator = () => {
             <Stack.Screen name="Onboarding" component={Onboarding} />
             <Stack.Screen name="Signin" component={SignInScreen} />
             <Stack.Screen name="Signup" component={RegisterScreen} />
+            <Stack.Screen name="Home" component={HomeScreen} />
 
 
         </Stack.Navigator>
@@ -58,3 +73,12 @@ const AppNavigator = () => {
 };
 
 export default AppNavigator;
+
+
+const styles = StyleSheet.create({
+    plusButton: {
+        top: -20, // Adjust position to suit your design
+        justifyContent: "center",
+        alignItems: "center",
+    },
+});
