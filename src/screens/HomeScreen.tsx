@@ -19,7 +19,9 @@ const getGreeting = () => {
     }
 };
 
-const HomeScreen: React.FC = () => {
+const HomeScreen: React.FC<{ route: any }> = ({ route }) => {
+    const { userName } = route.params;
+    console.log(userName);
     const [hasNotification] = useState<boolean>(true);
     const greeting: string = getGreeting();
 
@@ -43,7 +45,7 @@ const HomeScreen: React.FC = () => {
                                     {greeting},
                                 </StyledText>
                                 <StyledText fontSize="26px" fontWeight="bold" color="white">
-                                    Enjelin Morgeana
+                                    {userName}
                                 </StyledText>
                             </View>
 
@@ -61,7 +63,7 @@ const HomeScreen: React.FC = () => {
                         </View>
                     </ImageBackground>
                 </DisplayFlex>
-                <View className="px-5 top-24" >
+                <View className="px-5 top-24">
                     <TransactionsHistory />
                 </View>
                 <View className="px-5 top-24 pb-32">

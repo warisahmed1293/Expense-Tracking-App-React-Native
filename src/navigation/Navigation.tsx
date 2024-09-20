@@ -8,7 +8,8 @@ import ProfileScreen from "../screens/ProfileScreen";
 import { ICONS } from "../constant/icons";
 import Onboarding from "../screens/Onboarding";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import AuthScreen from "../screens/AuthScreen";
+import SignInScreen from "../authentication/LoginUser";
+import RegisterScreen from "../authentication/RegistrationUser";
 
 
 const Tab = createBottomTabNavigator();
@@ -48,7 +49,9 @@ const AppNavigator = () => {
         >
             <Stack.Screen name="Navigation" component={Navigation} />
             <Stack.Screen name="Onboarding" component={Onboarding} />
-            <Stack.Screen name="Auth" component={AuthScreen} />
+            <Stack.Screen name="Signin" component={SignInScreen} />
+            <Stack.Screen name="Signup" component={RegisterScreen} />
+
 
         </Stack.Navigator>
     );
