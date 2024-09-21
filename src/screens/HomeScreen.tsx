@@ -19,9 +19,9 @@ const getGreeting = () => {
     }
 };
 
-const HomeScreen: React.FC<{ route: any }> = ({ route }) => {
-    const { userName } = route.params;
-    console.log(userName);
+const HomeScreen: React.FC<{ route: any }> = ({ }) => {
+    // const { userName } = route.params;
+    // console.log(userName);
     const [hasNotification] = useState<boolean>(true);
     const greeting: string = getGreeting();
 

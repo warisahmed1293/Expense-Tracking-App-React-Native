@@ -55,3 +55,47 @@ export const DummyImages = [
     image: require("../assets/icons/profileImage5.png"),
   },
 ];
+
+export const DropDownIcons = [
+  {
+    id: 1,
+    title: "Paypal",
+    icon: require("../assets/icons/paypal.png"),
+  },
+  {
+    id: 2,
+    title: "Starbucks",
+    icon: require("../assets/icons/starbucks.png"),
+  },
+  {
+    id: 3,
+    title: "Spotify",
+    icon: require("../assets/icons/spotify.png"),
+  },
+  {
+    id: 4,
+    title: "Youtube",
+    icon: require("../assets/icons/YT.png"),
+  },
+  {
+    id: 5,
+    title: "Upwork",
+    icon: require("../assets/icons/upwork.png"),
+  },
+  {
+    id: 6,
+    title: "Netflix",
+    icon: require("../assets/icons/netflix.png"),
+  },
+  {
+    id: 7,
+    title: "Electricity",
+    icon: require("../assets/icons/electricity.png"),
+  },
+  {
+    id: 8,
+    title: "House Rent",
+    icon: require("../assets/icons/houserent.png"),
+  },
+];
+
