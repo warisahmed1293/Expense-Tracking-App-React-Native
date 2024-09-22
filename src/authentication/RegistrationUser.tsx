@@ -4,6 +4,7 @@ import auth from "@react-native-firebase/auth";
 import InputField from "../components/InputField";
 import { StyledText } from "../components/styledComponents";
 import Toast from "react-native-toast-message";
+import firestore from "@react-native-firebase/firestore";
 
 const RegisterScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
   const [name, setName] = useState<string>("");
@@ -12,22 +13,33 @@ const RegisterScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
 
   const handleRegister = async () => {
     try {
-      await auth().createUserWithEmailAndPassword(email, password);
+      const userCredential = await auth().createUserWithEmailAndPassword(email, password);
+
+      const user = userCredential.user;
+      await firestore().collection("users").doc(user.uid).set({
+        name: name,
+        email: email,
+        createdAt: firestore.FieldValue.serverTimestamp(),
+      });
+
       Toast.show({
         type: "success",
         text1: "Success",
         text2: "User registered successfully!",
       });
+
       setTimeout(() => {
-        // Navigate to Signin screen after registration
         navigation.navigate("Signin", { displayName: name });
       }, 1300);
+
     } catch (error) {
       Toast.show({
         type: "error",
         text1: "Error",
         text2: (error as Error).message,
       });
+      console.log(error);
+
     }
   };
 
@@ -39,6 +51,8 @@ const RegisterScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
         onChangeText={setName}
         autoCapitalize="words"
       />
+      <View className="my-3" />
+
       <InputField
         placeholder="Email"
         value={email}
@@ -46,12 +60,16 @@ const RegisterScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
         keyboardType="email-address"
         autoCapitalize="none"
       />
+      <View className="my-3" />
+
       <InputField
         placeholder="Password"
         value={password}
         onChangeText={setPassword}
         secureTextEntry
       />
+      <View className="my-3" />
+
       <TouchableOpacity
         className="bg-TEXT_GREEN py-[16px] w-[75%] rounded-full self-center mt-5"
         onPress={handleRegister}

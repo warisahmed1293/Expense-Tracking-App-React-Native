@@ -6,6 +6,11 @@ import { DisplayFlex, StyledText } from "../styledComponents";
 import InputField from "../InputField";
 import FileUpload from "./FileUpload";
 import Toast from "react-native-toast-message";
+import firestore from "@react-native-firebase/firestore";
+import auth from "@react-native-firebase/auth";
+import DateInput from "./DateInput"; // Adjust the import based on your file structure
+import storage from "@react-native-firebase/storage";
+import RNFS from "react-native-fs";
 
 interface DropdownItem {
     id: number;
@@ -16,7 +21,8 @@ interface DropdownItem {
 const ExpenseInputCard: React.FC = () => {
     const [selectedItem, setSelectedItem] = useState<DropdownItem | null>(null);
     const [amount, setAmount] = useState("");
-    const [fileName, setFileName] = useState<string | null>(null); // State to store selected file name
+    const [fileName, setFileName] = useState<string | null>(null);
+    const [selectedDate, setSelectedDate] = useState<Date | null>(null); // State for selected date
 
     const handleSelectItem = (item: DropdownItem) => {
         setSelectedItem(item);
@@ -25,25 +31,77 @@ const ExpenseInputCard: React.FC = () => {
 
     const clearInput = () => {
         setAmount("");
+        setSelectedDate(null);
+        setFileName("");
     };
 
-    const handleSubmit = () => {
-        const formData = {
-            expense: selectedItem,
+    const handleSubmit = async () => {
+        const user = auth().currentUser;
+
+        if (!user) {
+            Toast.show({
+                type: "error",
+                text1: "Error",
+                text2: "User not authenticated.",
+            });
+            return;
+        }
+        if (!amount || !selectedItem || !selectedDate) {
+            Toast.show({
+                type: "error",
+                text1: "Error",
+                text2: "Please enter all required fields",
+            });
+            return;
+        }
+
+        const expenseData = {
+            id: Date.now().toString(),
+            expenseType: selectedItem?.title,
             amount,
             fileName,
+            date: selectedDate.toDateString(),
+            type: "expense",
         };
-        Toast.show({
-            type: "success",
-            text1: "Success",
-            text2: "Expense added successfully!",
-        });
-        console.log("Form Data: ", formData);
+
+        try {
+            if (fileName) {
+                const localFilePath = `${RNFS.DocumentDirectoryPath}/${fileName}`;
+                const reference = storage().ref(`${user.uid}/${fileName}`);
+                await reference.putFile(localFilePath);
+                console.log("File uploaded to Firebase Storage successfully!");
+            }
+
+            const userDocRef = firestore().collection("expenses").doc(user.uid);
+            await userDocRef.set(
+                {
+                    expenses: firestore.FieldValue.arrayUnion(expenseData),
+                },
+                { merge: true }
+            );
+            console.log(expenseData);
+
+            Toast.show({
+                type: "success",
+                text1: "Success",
+                text2: "Expense added successfully!",
+            });
+
+            clearInput();
+        } catch (error) {
+            Toast.show({
+                type: "error",
+                text1: "Error",
+                text2: (error as Error).message,
+            });
+        }
     };
 
     return (
         <>
-            <Toast />
+            <View className="bottom-20 bg-white">
+                <Toast />
+            </View>
             <DisplayFlex justifyContent="space-between" alignItems="center" direction="column" className="pt-6">
                 <View className="my-3 w-72 h-[85px] justify-between">
                     <StyledText color="black">Name</StyledText>
@@ -69,6 +127,10 @@ const ExpenseInputCard: React.FC = () => {
                     />
                 </View>
                 <View className="my-3 w-72 h-[85px] justify-between">
+                    <StyledText color="black">Date</StyledText>
+                    <DateInput value={selectedDate} onChange={setSelectedDate} />
+                </View>
+                <View className="my-3 w-72 h-[85px] justify-between">
                     <StyledText color="black">Invoice</StyledText>
                     <FileUpload setFileName={setFileName} />
                 </View>
@@ -82,15 +144,12 @@ const ExpenseInputCard: React.FC = () => {
                             Add Expense
                         </StyledText>
                     </TouchableOpacity>
-
                 </View>
-
             </DisplayFlex>
         </>
     );
 };
 
-export default ExpenseInputCard;
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -105,3 +164,5 @@ const styles = StyleSheet.create({
         elevation: 5,
     },
 });
+
+export default ExpenseInputCard;

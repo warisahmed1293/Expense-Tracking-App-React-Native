@@ -116,7 +116,7 @@ dependencies {
     
     // Firebase Authentication
     implementation("com.google.firebase:firebase-auth")
-
+implementation project(':react-native-fs')
     if (hermesEnabled.toBoolean()) {
         implementation("com.facebook.react:hermes-android")
     } else {
