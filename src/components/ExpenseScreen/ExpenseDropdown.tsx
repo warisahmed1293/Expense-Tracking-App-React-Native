@@ -26,13 +26,13 @@ const ExpenseDropdown: React.FC<CustomDropdownProps> = ({ items, onSelect, selec
     return (
         <View>
             <TouchableOpacity
-                className="border border-gray-300 rounded-lg w-64 px-5 h-12 justify-between py-3"
+                className="border border-[#CCC] border-2 rounded-lg w-72 px-5 h-14 justify-between py-3"
                 onPress={() => setIsVisible(true)}
             >
                 {selectedItem ? (
                     <View className="flex-1 flex-row items-center justify-between">
                         <View className="flex-row items-center">
-                            <Image source={selectedItem.icon} className="w-6 h-6" />
+                            <Image source={selectedItem.icon} className="w-8 h-8" resizeMode="contain" />
                             <Text className="ml-2 text-base text-black">{selectedItem.title}</Text>
                         </View>
                         <View className="flex">
@@ -40,7 +40,15 @@ const ExpenseDropdown: React.FC<CustomDropdownProps> = ({ items, onSelect, selec
                         </View>
                     </View>
                 ) : (
-                    <Text className="text-base text-gray-500">{placeholder}</Text>
+                    <View className="flex-1 flex-row items-center justify-between">
+                        <View>
+                            <Text className="text-base text-gray-500">{placeholder}</Text>
+                        </View>
+                        <View>
+                            <Icon type="solid" name="ChevronDownIcon" color="#29756F" size={20} />
+                        </View>
+
+                    </View>
                 )}
             </TouchableOpacity>
             <Modal visible={isVisible} transparent={true} animationType="slide">
@@ -55,7 +63,7 @@ const ExpenseDropdown: React.FC<CustomDropdownProps> = ({ items, onSelect, selec
                                 className="flex-row items-center py-3 px-4 border-b border-gray-200"
                                 onPress={() => handleSelectItem(item)}
                             >
-                                <Image source={item.icon} className="w-6 h-6" />
+                                <Image source={item.icon} className="w-8 h-8" resizeMode="contain" />
                                 <Text className="ml-3 text-black text-base">{item.title}</Text>
                             </TouchableOpacity>
                         )}

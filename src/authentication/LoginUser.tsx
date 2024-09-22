@@ -46,6 +46,7 @@ const SignInScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
                 keyboardType="email-address"
                 autoCapitalize="none"
             />
+            <View className="my-3" />
             <InputField
                 placeholder="Password"
                 value={password}

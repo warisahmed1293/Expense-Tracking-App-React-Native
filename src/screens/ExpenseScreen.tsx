@@ -1,4 +1,4 @@
-import { ImageBackground, ScrollView } from "react-native";
+import { ImageBackground, ScrollView, View } from "react-native";
 import React from "react";
 import { DisplayFlex } from "../components/styledComponents";
 import TopNavbar from "../components/TopNavbar";
@@ -30,7 +30,9 @@ const ExpenseScreen: React.FC<ExpenseProps> = ({ navigation }) => {
                         onRightIconPress={() => console.log("Options pressed!")}
                     />
                 </ImageBackground>
-                <ExpenseInputCard />
+                <View className="absolute bg-white w-[330] border border-gray-200 rounded-3xl py-3 top-28">
+                    <ExpenseInputCard />
+                </View>
             </DisplayFlex>
         </ScrollView>
     );

@@ -1,5 +1,12 @@
 import React, { useState } from "react";
-import { TextInput, StyleSheet, TextInputProps, TouchableOpacity, View } from "react-native";
+import {
+    TextInput,
+    StyleSheet,
+    TextInputProps,
+    TouchableOpacity,
+    View,
+    Text,
+} from "react-native";
 import Icon from "./Icon";
 
 interface InputFieldProps extends TextInputProps {
@@ -9,6 +16,12 @@ interface InputFieldProps extends TextInputProps {
     secureTextEntry?: boolean;
     keyboardType?: TextInputProps["keyboardType"];
     autoCapitalize?: TextInputProps["autoCapitalize"];
+    showButton?: boolean;
+    buttonType?: "icon" | "text";
+    buttonText?: string;
+    onButtonPress?: () => void;
+    buttonIconName?: string;
+    classname?: string;
 }
 
 const InputField: React.FC<InputFieldProps> = ({
@@ -18,6 +31,12 @@ const InputField: React.FC<InputFieldProps> = ({
     secureTextEntry = false,
     keyboardType,
     autoCapitalize,
+    showButton = false,
+    buttonType = "icon",
+    buttonText = "Clear",
+    onButtonPress,
+    buttonIconName = "EyeSlashIcon",
+    classname,
 }) => {
     const [isFocused, setIsFocused] = useState(false);
     const [isPasswordVisible, setPasswordVisible] = useState(!secureTextEntry);
@@ -39,7 +58,18 @@ const InputField: React.FC<InputFieldProps> = ({
                 onFocus={() => setIsFocused(true)}
                 onBlur={() => setIsFocused(false)}
                 placeholderTextColor={isFocused ? "#438883" : "#999"}
+                className={classname}
+
             />
+            {showButton && (
+                <TouchableOpacity onPress={onButtonPress} style={styles.iconContainer}>
+                    {buttonType === "icon" ? (
+                        <Icon name={buttonIconName} size={24} color="#438883" type="solid" />
+                    ) : (
+                        <Text style={styles.clearText}>{buttonText}</Text>
+                    )}
+                </TouchableOpacity>
+            )}
             {secureTextEntry && (
                 <TouchableOpacity onPress={togglePasswordVisibility} style={styles.iconContainer}>
                     <Icon
@@ -59,18 +89,16 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         alignItems: "center",
         borderWidth: 2,
-        borderColor: "#ccc", // Default grey border
+        borderColor: "#ccc",
         borderRadius: 8,
-        marginBottom: 12,
         padding: 8,
     },
     containerFocused: {
         flexDirection: "row",
         alignItems: "center",
         borderWidth: 2,
-        borderColor: "#438883", // Focused green border
+        borderColor: "#438883",
         borderRadius: 8,
-        marginBottom: 12,
         padding: 8,
     },
     input: {
@@ -79,6 +107,10 @@ const styles = StyleSheet.create({
     },
     iconContainer: {
         marginLeft: 8,
+    },
+    clearText: {
+        color: "black",
+        fontSize: 16,
     },
 });
 
