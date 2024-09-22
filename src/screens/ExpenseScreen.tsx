@@ -4,6 +4,7 @@ import { DisplayFlex } from "../components/styledComponents";
 import TopNavbar from "../components/TopNavbar";
 import { StackNavigationProp } from "@react-navigation/stack";
 import ExpenseInputCard from "../components/ExpenseScreen/ExpenseInputCard";
+import IncomeInputCard from "../components/ExpenseScreen/IncomeInputCard";
 
 type ExpenseStackParamList = {
     ExpenseScreen: undefined;
@@ -32,6 +33,7 @@ const ExpenseScreen: React.FC<ExpenseProps> = ({ navigation }) => {
                 </ImageBackground>
                 <View className="absolute bg-white w-[330] border border-gray-200 rounded-3xl py-3 top-28">
                     <ExpenseInputCard />
+                    <IncomeInputCard />
                 </View>
             </DisplayFlex>
         </ScrollView>

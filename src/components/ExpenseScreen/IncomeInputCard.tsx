@@ -1,14 +1,14 @@
 import React, { useState } from "react";
 import { View, TouchableOpacity, StyleSheet } from "react-native";
 import ExpenseDropdown from "./ExpenseDropdown";
-import { DropDownExpenseIcons } from "../../constant/dataDummy";
+import { DropDownIncomeIcons } from "../../constant/dataDummy";
 import { DisplayFlex, StyledText } from "../styledComponents";
 import InputField from "../InputField";
 import FileUpload from "./FileUpload";
 import Toast from "react-native-toast-message";
 import firestore from "@react-native-firebase/firestore";
 import auth from "@react-native-firebase/auth";
-import DateInput from "./DateInput"; // Adjust the import based on your file structure
+import DateInput from "./DateInput";
 import storage from "@react-native-firebase/storage";
 import RNFS from "react-native-fs";
 
@@ -18,12 +18,11 @@ interface DropdownItem {
     icon: any;
 }
 
-const ExpenseInputCard: React.FC = () => {
+const IncomeInputCard: React.FC = () => {
     const [selectedItem, setSelectedItem] = useState<DropdownItem | null>(null);
     const [amount, setAmount] = useState("");
     const [fileName, setFileName] = useState<string | null>(null);
-    const [selectedDate, setSelectedDate] = useState<Date | null>(null); // State for selected date
-
+    const [selectedDate, setSelectedDate] = useState<Date | null>(null);
     const handleSelectItem = (item: DropdownItem) => {
         setSelectedItem(item);
         console.log("Selected Item:", item);
@@ -55,13 +54,13 @@ const ExpenseInputCard: React.FC = () => {
             return;
         }
 
-        const transactionData = {
+        const IncomeData = {
             id: Date.now().toString(),
             transactionHolder: selectedItem?.title,
             amount,
             fileName,
             date: selectedDate.toDateString(),
-            type: "expense",
+            type: "income",
         };
 
         try {
@@ -75,16 +74,16 @@ const ExpenseInputCard: React.FC = () => {
             const userDocRef = firestore().collection("transactions").doc(user.uid);
             await userDocRef.set(
                 {
-                    transaction: firestore.FieldValue.arrayUnion(transactionData),
+                    transaction: firestore.FieldValue.arrayUnion(IncomeData),
                 },
                 { merge: true }
             );
-            console.log(transactionData);
+            console.log(IncomeData);
 
             Toast.show({
                 type: "success",
                 text1: "Success",
-                text2: "Expense added successfully!",
+                text2: "Income added successfully!",
             });
 
             clearInput();
@@ -106,10 +105,10 @@ const ExpenseInputCard: React.FC = () => {
                 <View className="my-3 w-72 h-[85px] justify-between">
                     <StyledText color="black">Name</StyledText>
                     <ExpenseDropdown
-                        items={DropDownExpenseIcons}
+                        items={DropDownIncomeIcons}
                         onSelect={handleSelectItem}
                         selectedItem={selectedItem}
-                        placeholder="Select an expense"
+                        placeholder="Select an Income"
                     />
                 </View>
                 <View className="my-3 w-72 h-[85px] justify-between">
@@ -141,7 +140,7 @@ const ExpenseInputCard: React.FC = () => {
                         style={styles.button}
                     >
                         <StyledText className="text-center text-[20px] text-white font-bold">
-                            Add Expense
+                            Add Income
                         </StyledText>
                     </TouchableOpacity>
                 </View>
@@ -165,4 +164,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default ExpenseInputCard;
+export default IncomeInputCard;

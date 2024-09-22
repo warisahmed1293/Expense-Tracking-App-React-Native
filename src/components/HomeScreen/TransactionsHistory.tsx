@@ -5,12 +5,11 @@ import TransactionHistoryMain from "./TransactionHistoryMain";
 import firestore from "@react-native-firebase/firestore";
 import auth from "@react-native-firebase/auth";
 
-// Define the possible keys for iconMapping
-type TransactionHolderType = "Upwork" | "Paypal" | "Youtube" | "Spotify" | "Netflix" | "Starbucks" | "Electricity";
+type TransactionHolderType = "Upwork" | "Paypal" | "Youtube" | "Spotify" | "Netflix" | "Starbucks" | "Electricity" | "Fiverr";
 
 interface Transaction {
     id: string;
-    expenseType: TransactionHolderType;
+    transactionHolder: TransactionHolderType;
     date: string;
     amount: number;
     type: string;
@@ -24,6 +23,7 @@ const iconMapping: Record<TransactionHolderType, any> = {
     Netflix: require("../../assets/icons/netflix.png"),
     Starbucks: require("../../assets/icons/starbucks.png"),
     Electricity: require("../../assets/icons/electricity.png"),
+    Fiverr: require("../../assets/icons/fiverr.png"),
 };
 
 const TransactionsHistory = () => {
@@ -32,33 +32,33 @@ const TransactionsHistory = () => {
     const [showAll, setShowAll] = useState(false);
 
     useEffect(() => {
-        const fetchTransactions = async () => {
-            const user = auth().currentUser;
+        const user = auth().currentUser;
 
-            if (!user) {
-                console.log("User not authenticated.");
-                setLoading(false);
-                return;
-            }
+        if (!user) {
+            console.log("User not authenticated.");
+            setLoading(false);
+            return;
+        }
 
-            try {
-                const userDocRef = firestore().collection("expenses").doc(user.uid);
-                const doc = await userDocRef.get();
+        const userDocRef = firestore().collection("transactions").doc(user.uid);
 
-                if (doc.exists) {
-                    const data = doc.data();
-                    if (data && data.expenses) {
-                        setTransactions(data.expenses);
-                    }
+        const unsubscribe = userDocRef.onSnapshot((doc) => {
+            if (doc.exists) {
+                const data = doc.data();
+                if (data && data.transaction) {
+                    setTransactions(data.transaction);
                 }
-            } catch (error) {
-                console.log("Error fetching transactions:", error);
-            } finally {
-                setLoading(false);
+            } else {
+                console.log("No transactions found.");
+                setTransactions([]);
             }
-        };
+            setLoading(false);
+        }, (error) => {
+            console.log("Error fetching transactions:", error);
+            setLoading(false);
+        });
 
-        fetchTransactions();
+        return () => unsubscribe();
     }, []);
 
     if (loading) {
@@ -85,10 +85,10 @@ const TransactionsHistory = () => {
                     displayedTransactions.map((item) => (
                         <TransactionHistoryMain
                             key={item.id}
-                            TransactionHolder={item.expenseType}
+                            TransactionHolder={item.transactionHolder}
                             TransactionTime={item.date}
                             TransactionValue={item.amount}
-                            TransactionHolderIcon={iconMapping[item.expenseType]}
+                            TransactionHolderIcon={iconMapping[item.transactionHolder]}
                             type={item.type}
                         />
                     ))

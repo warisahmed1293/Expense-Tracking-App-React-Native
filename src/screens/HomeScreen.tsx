@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { ImageBackground, ScrollView, TouchableOpacity, View } from "react-native";
+import { ActivityIndicator, ImageBackground, ScrollView, TouchableOpacity, View } from "react-native";
 import Icon from "../components/Icon";
 import BalanceCard from "../components/HomeScreen/BalanceCard";
 import { DisplayFlex, StyledText } from "../components/styledComponents";
@@ -8,6 +8,14 @@ import SendAgainTransictions from "../components/HomeScreen/SendAgainTransiction
 import firestore from "@react-native-firebase/firestore";
 import auth from "@react-native-firebase/auth";
 
+interface Transaction {
+    amount: string;
+    date: string;
+    fileName: string | null;
+    id: string;
+    transactionHolder: string;
+    type: "income" | "expense";
+}
 
 const getGreeting = () => {
     const currentHour = new Date().getHours();
@@ -22,8 +30,12 @@ const getGreeting = () => {
     }
 };
 
-const HomeScreen: React.FC<{ route: any }> = ({ }) => {
+const HomeScreen: React.FC<{ route: any }> = () => {
     const [userName, setUserName] = useState<string>("");
+    const [income, setIncome] = useState<number>(0);
+    const [expense, setExpense] = useState<number>(0);
+    const [loading, setLoading] = useState<boolean>(true);
+
     useEffect(() => {
         const fetchUserData = async () => {
             const user = auth().currentUser;
@@ -35,16 +47,63 @@ const HomeScreen: React.FC<{ route: any }> = ({ }) => {
             }
         };
 
+        const unsubscribeFromTransactions = () => {
+            const user = auth().currentUser;
+
+            if (!user) {
+                console.log("User not authenticated.");
+                setLoading(true);
+                return;
+            }
+
+            const userDocRef = firestore().collection("transactions").doc(user.uid);
+            return userDocRef.onSnapshot((doc) => {
+                if (doc.exists) {
+                    const data = doc.data();
+                    let totalIncome = 0;
+                    let totalExpense = 0;
+
+                    if (data && data.transaction) {
+                        data.transaction.forEach((transaction: Transaction) => {
+                            const amount = parseFloat(transaction.amount);
+                            if (transaction.type === "income") {
+                                totalIncome += amount;
+                            } else if (transaction.type === "expense") {
+                                totalExpense += amount;
+                            }
+                        });
+                    }
+
+                    setIncome(totalIncome);
+                    setExpense(totalExpense);
+                } else {
+                    console.log("No transactions found");
+                }
+                setLoading(false);
+            }, (error) => {
+                console.log("Error fetching transactions:", error);
+                setLoading(false);
+            });
+        };
+
         fetchUserData();
+        const unsubscribe = unsubscribeFromTransactions();
+        return () => unsubscribe ? unsubscribe() : undefined;
+
     }, []);
 
     const [hasNotification] = useState<boolean>(true);
     const greeting: string = getGreeting();
+    const totalBalance = income - expense;
+
+    if (loading) {
+        return <ActivityIndicator size="large" color="#0000ff" />;
+    }
 
     return (
         <>
             <ScrollView showsVerticalScrollIndicator={false} className="bg-white">
-                <DisplayFlex flex={1} direction="column" justifyContent="space-between" >
+                <DisplayFlex flex={1} direction="column" justifyContent="space-between">
                     <ImageBackground
                         source={require("../assets/top_section.png")}
                         resizeMode="cover"
@@ -76,7 +135,7 @@ const HomeScreen: React.FC<{ route: any }> = ({ }) => {
                         </DisplayFlex>
                     </ImageBackground>
                     <View className="absolute bottom-[-60] w-[100%] px-5 ">
-                        <BalanceCard totalBalance={2548} income={1840} expense={284} />
+                        <BalanceCard totalBalance={totalBalance} income={income} expense={expense} />
                     </View>
                 </DisplayFlex>
                 <View className="px-5 top-24">
