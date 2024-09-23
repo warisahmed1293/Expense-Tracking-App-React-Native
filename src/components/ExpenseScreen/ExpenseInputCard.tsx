@@ -99,10 +99,7 @@ const ExpenseInputCard: React.FC = () => {
 
     return (
         <>
-            <View className="bottom-20 bg-white">
-                <Toast />
-            </View>
-            <DisplayFlex justifyContent="space-between" alignItems="center" direction="column" className="pt-6">
+            <DisplayFlex justifyContent="space-between" alignItems="center" direction="column" className="pt-6 bg-white">
                 <View className="my-3 w-72 h-[85px] justify-between">
                     <StyledText color="black">Name</StyledText>
                     <ExpenseDropdown
@@ -145,6 +142,8 @@ const ExpenseInputCard: React.FC = () => {
                         </StyledText>
                     </TouchableOpacity>
                 </View>
+                <Toast />
+
             </DisplayFlex>
         </>
     );

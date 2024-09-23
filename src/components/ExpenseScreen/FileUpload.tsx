@@ -17,7 +17,7 @@ const FileUpload: React.FC<FileUploadProps> = ({ setFileName }) => {
     const handleFilePicker = async () => {
         try {
             const res = await DocumentPicker.pick({
-                type: [DocumentPicker.types.images],
+                type: [DocumentPicker.types.allFiles],
                 mode: "open",
             });
 

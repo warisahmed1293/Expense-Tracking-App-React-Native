@@ -64,7 +64,6 @@ const TransactionsHistory = () => {
     if (loading) {
         return <ActivityIndicator size="large" color="#0000ff" />;
     }
-
     const displayedTransactions = showAll ? transactions : transactions.slice(0, 4);
 
     return (
@@ -79,7 +78,6 @@ const TransactionsHistory = () => {
                     </TouchableOpacity>
                 )}
             </DisplayFlex>
-
             <View className="py-3">
                 {displayedTransactions.length > 0 ? (
                     displayedTransactions.map((item) => (

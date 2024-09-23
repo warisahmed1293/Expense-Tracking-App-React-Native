@@ -113,7 +113,7 @@ const HomeScreen: React.FC<{ route: any }> = () => {
                             direction="row"
                             alignItems="center"
                             justifyContent="space-between"
-                            className="bottom-32"
+                            className="bottom-28"
                         >
                             <View className="top-14 ml-5">
                                 <StyledText fontSize="18px" color="white">

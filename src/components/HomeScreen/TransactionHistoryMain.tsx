@@ -25,16 +25,26 @@ const TransactionHistoryMain: React.FC<TransactionHistoryMainProps> = ({
     };
 
     const getFormattedDate = (transactionDate: string) => {
+        // Normalize date format
+        const normalizedDate = moment(
+            transactionDate,
+            ["ddd MMM DD YYYY", "MM/DD/YYYY", "ddd MMM DD YYYY HH:mm:ss ZZ", "ddd MMM DD YYYY HH:mm:ss"],
+            true // strict parsing
+        );
+
+        if (!normalizedDate.isValid()) {
+            return "Invalid Date"; // handle invalid date format
+        }
+
         const today = moment().startOf("day");
         const yesterday = moment().subtract(1, "days").startOf("day");
-        const transactionMoment = moment(transactionDate, "DD-MM-YYYY");
 
-        if (transactionMoment.isSame(today, "day")) {
+        if (normalizedDate.isSame(today, "day")) {
             return "Today";
-        } else if (transactionMoment.isSame(yesterday, "day")) {
+        } else if (normalizedDate.isSame(yesterday, "day")) {
             return "Yesterday";
         } else {
-            return transactionMoment.format("MMM DD, YYYY");
+            return normalizedDate.format("MMM DD, YYYY");
         }
     };
 

@@ -38,7 +38,7 @@ const DateInput: React.FC<DateInputProps> = ({ value, onChange }) => {
             <InputField
                 classname="h-10 w-72"
                 placeholder="Select date"
-                value={selectedDate?.toDateString()}
+                value={selectedDate?.toLocaleDateString()}
                 showButton={true}
                 buttonType="icon"
                 buttonIconName="CalendarIcon"
