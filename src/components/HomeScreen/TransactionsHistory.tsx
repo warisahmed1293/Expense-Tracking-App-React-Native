@@ -5,12 +5,12 @@ import TransactionHistoryMain from "./TransactionHistoryMain";
 import firestore from "@react-native-firebase/firestore";
 import auth from "@react-native-firebase/auth";
 
-type TransactionHolderType = "Upwork" | "Paypal" | "Youtube" | "Spotify" | "Netflix" | "Starbucks" | "Electricity" | "Fiverr";
+type TransactionHolderType = "Upwork" | "Paypal" | "Youtube" | "Spotify" | "Netflix" | "Starbucks" | "Electricity" | "Fiverr" | "Rent";
 
 interface Transaction {
     id: string;
     transactionHolder: TransactionHolderType;
-    date: string;
+    date: string; // Ensure this is in a format that can be parsed by Date
     amount: number;
     type: string;
 }
@@ -24,9 +24,10 @@ const iconMapping: Record<TransactionHolderType, any> = {
     Starbucks: require("../../assets/icons/starbucks.png"),
     Electricity: require("../../assets/icons/electricity.png"),
     Fiverr: require("../../assets/icons/fiverr.png"),
+    Rent: require("../../assets/icons/houserent.png"),
 };
 
-const TransactionsHistory = () => {
+const TransactionsHistory: React.FC = () => {
     const [transactions, setTransactions] = useState<Transaction[]>([]);
     const [loading, setLoading] = useState(true);
     const [showAll, setShowAll] = useState(false);
@@ -46,7 +47,10 @@ const TransactionsHistory = () => {
             if (doc.exists) {
                 const data = doc.data();
                 if (data && data.transaction) {
-                    setTransactions(data.transaction);
+                    const sortedTransactions = data.transaction.sort((a: Transaction, b: Transaction) =>
+                        new Date(b.date).getTime() - new Date(a.date).getTime()
+                    );
+                    setTransactions(sortedTransactions);
                 }
             } else {
                 console.log("No transactions found.");
@@ -64,6 +68,7 @@ const TransactionsHistory = () => {
     if (loading) {
         return <ActivityIndicator size="large" color="#0000ff" />;
     }
+
     const displayedTransactions = showAll ? transactions : transactions.slice(0, 4);
 
     return (

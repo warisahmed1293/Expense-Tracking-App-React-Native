@@ -26,7 +26,7 @@ const ExpenseDropdown: React.FC<CustomDropdownProps> = ({ items, onSelect, selec
     return (
         <View>
             <TouchableOpacity
-                className="border border-[#CCC] border-2 rounded-lg w-72 px-5 h-14 justify-between py-3"
+                className="border-[#CCC] border-2 rounded-lg w-72 px-5 h-14 justify-between py-3"
                 onPress={() => setIsVisible(true)}
             >
                 {selectedItem ? (

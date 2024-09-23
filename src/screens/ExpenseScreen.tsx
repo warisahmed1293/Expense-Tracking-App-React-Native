@@ -54,14 +54,19 @@ const ExpenseScreen: React.FC<ExpenseProps> = ({ navigation }) => {
                 {/* Tab Navigator */}
                 <View className="absolute bg-white w-[400px] h-[650] rounded-3xl py-5 top-28" style={styles.shadow}>
                     <Tab.Navigator
+                        initialRouteName="Income"
+                        tabBarPosition="top"
                         screenOptions={{
                             tabBarIndicatorStyle: { backgroundColor: "#438883" },
                             tabBarActiveTintColor: "#408782",
                             tabBarInactiveTintColor: "gray",
+                            tabBarStyle: { backgroundColor: "white" },
+                            tabBarLabelStyle: { fontSize: 14, fontWeight: "bold" },
                         }}
+                        key={"tab"}
                     >
-                        <Tab.Screen name="Income" component={IncomeTab} />
-                        <Tab.Screen name="Expense" component={ExpenseTab} />
+                        <Tab.Screen name="Income" component={IncomeTab} key="income" />
+                        <Tab.Screen name="Expense" component={ExpenseTab} key="expense" />
                     </Tab.Navigator>
                 </View>
             </DisplayFlex>
