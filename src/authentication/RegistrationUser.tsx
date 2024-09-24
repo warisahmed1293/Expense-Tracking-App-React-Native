@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { View, StyleSheet, TouchableOpacity, Image, ActivityIndicator } from "react-native";
-import auth from "@react-native-firebase/auth";
+import { View, StyleSheet, TouchableOpacity, Image, ActivityIndicator, ScrollView } from "react-native";
 import InputField from "../components/InputField";
 import { StyledText } from "../components/styledComponents";
 import Toast from "react-native-toast-message";
-import firestore from "@react-native-firebase/firestore";
-import storage from "@react-native-firebase/storage";
-import { launchCamera, launchImageLibrary } from "react-native-image-picker";
-import { GoogleSignin } from '@react-native-google-signin/google-signin';
+import {
+  handleRegister,
+  pickImageFromGallery,
+  captureImageFromCamera,
+  handleGoogleSignIn,
+  configureGoogleSignIn
+} from './registration';
 
 const RegisterScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
   const [name, setName] = useState<string>("");
@@ -16,123 +18,13 @@ const RegisterScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
   const [profileImageUri, setProfileImageUri] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
 
-  const handleRegister = async () => {
-    if (!name || !email || !password) {
-      Toast.show({
-        type: "error",
-        text1: "Error",
-        text2: "Please fill in all fields.",
-      });
-      return;
-    }
-
-    try {
-      setLoading(true);
-      const userCredential = await auth().createUserWithEmailAndPassword(email, password);
-      const user = userCredential.user;
-
-      let profileImageUrl = null;
-      if (profileImageUri) {
-        const reference = storage().ref(`profile_pictures/${user.uid}`);
-        await reference.putFile(profileImageUri);
-        profileImageUrl = await reference.getDownloadURL();
-      }
-
-      await firestore().collection("users").doc(user.uid).set({
-        name,
-        email,
-        profileImageUrl,
-        createdAt: firestore.FieldValue.serverTimestamp(),
-      });
-
-      Toast.show({
-        type: "success",
-        text1: "Success",
-        text2: "User registered successfully!",
-      });
-
-      setTimeout(() => {
-        navigation.navigate("Signin", { displayName: name });
-      }, 1300);
-    } catch (error) {
-      Toast.show({
-        type: "error",
-        text1: "Error",
-        text2: (error as Error).message,
-      });
-      console.log(error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-
-  const pickImageFromGallery = () => {
-    launchImageLibrary({ mediaType: 'photo' }, response => {
-      if (response.didCancel) {
-        console.log('User cancelled image picker');
-      } else if (response.errorMessage) {
-        console.error('Image Picker Error: ', response.errorMessage);
-      } else {
-        setProfileImageUri(response.assets?.[0].uri || null);
-      }
-    });
-  };
   useEffect(() => {
-    GoogleSignin.configure({
-      webClientId: '327304051789-3mbatsbqrg62ev3fcp0efgoh9c84misb.apps.googleusercontent.com',
-    });
+    configureGoogleSignIn();
   }, []);
-  const captureImageFromCamera = () => {
-    launchCamera({ mediaType: 'photo' }, response => {
-      if (response.didCancel) {
-        console.log('User cancelled camera');
-      } else if (response.errorMessage) {
-        console.error('Camera Error: ', response.errorMessage);
-      } else {
-        setProfileImageUri(response.assets?.[0].uri || null);
-      }
-    });
-  };
-  const handleGoogleSignIn = async () => {
-    try {
-      setLoading(true);
-      await GoogleSignin.hasPlayServices();
-      const userInfo = await GoogleSignin.signIn();
 
-      const userCredential = await auth().signInWithCredential(
-        auth.GoogleAuthProvider.credential(userInfo.idToken)
-      );
-
-      const user = userCredential.user;
-      const profileImageUrl = userInfo.user.photo;
-
-      await firestore().collection("users").doc(user.uid).set({
-        name: userInfo.user.name,
-        email: userInfo.user.email,
-        profileImageUrl,
-        createdAt: firestore.FieldValue.serverTimestamp(),
-      });
-
-      Toast.show({
-        type: "success",
-        text1: "Success",
-        text2: "User registered successfully with Google!",
-      });
-
-      setTimeout(() => {
-        navigation.navigate("Home");
-      }, 1300);
-    } catch (error) {
-      Toast.show({
-        type: "error",
-        text1: "Error",
-        text2: (error as Error).message,
-      });
-      console.log(error);
-    } finally {
-      setLoading(false);
-    }
+  const handleRegisterButton = () => {
+    setLoading(true);
+    handleRegister(name, email, password, profileImageUri, navigation).finally(() => setLoading(false));
   };
 
   return (
@@ -146,10 +38,10 @@ const RegisterScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
       <InputField placeholder="Password" value={password} onChangeText={setPassword} secureTextEntry />
       <View className="my-3" />
 
-      <TouchableOpacity style={styles.uploadButton} onPress={pickImageFromGallery}>
+      <TouchableOpacity style={styles.uploadButton} onPress={() => pickImageFromGallery(setProfileImageUri)}>
         <StyledText className="text-center text-[16px] text-gray-700">Pick Image from Gallery</StyledText>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.uploadButton} onPress={captureImageFromCamera}>
+      <TouchableOpacity style={styles.uploadButton} onPress={() => captureImageFromCamera(setProfileImageUri)}>
         <StyledText className="text-center text-[16px] text-gray-700">Capture Image from Camera</StyledText>
       </TouchableOpacity>
 
@@ -159,7 +51,7 @@ const RegisterScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
 
       <TouchableOpacity
         className="bg-TEXT_GREEN py-[16px] w-[75%] rounded-full self-center mt-5"
-        onPress={handleRegister}
+        onPress={handleRegisterButton}
         style={styles.button}
         disabled={loading}
       >
@@ -169,19 +61,36 @@ const RegisterScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
           <StyledText className="text-center text-[20px] text-white font-bold">Register</StyledText>
         )}
       </TouchableOpacity>
+      <StyledText className='text-center text-[16px] text-gray-700 mt-5' fontWeight='bold'>
+        or
+      </StyledText>
 
       <TouchableOpacity
-        className="bg-TEXT_GREEN py-[16px] w-[75%] rounded-full self-center mt-5"
-        onPress={handleGoogleSignIn}
+        className="bg-white py-[16px] w-[70%] rounded-xl self-center justify-around items-center flex-row mt-5"
+        onPress={() => handleGoogleSignIn(navigation)}
         style={styles.button}
       >
+        <Image source={{ uri: 'https://img.icons8.com/?size=100&id=V5cGWnc9R4xj&format=png&color=000000' }} className="w-[25px] h-[25px]" />
+
         {loading ? (
           <ActivityIndicator color="white" />
         ) : (
-          <StyledText className="text-center text-[20px] text-white font-bold">Sign up with Google</StyledText>
+          <StyledText className="text-center text-[18px] text-black font-normal">Sign up with Google</StyledText>
         )}
       </TouchableOpacity>
+      <TouchableOpacity
+        className="bg-[#3F51B5] py-[16px]  w-[70%] rounded-xl self-center justify-around items-center flex-row mt-5"
+        onPress={() => handleGoogleSignIn(navigation)}
+        style={styles.button}
+      >
+        <Image source={{ uri: 'https://img.icons8.com/?size=100&id=118467&format=png&color=FFFFFF' }} className="w-[25px] h-[25px]" />
 
+        {loading ? (
+          <ActivityIndicator color="white" />
+        ) : (
+          <StyledText className="text-center text-[18px] text-white font-normal">Sign up with Facebook</StyledText>
+        )}
+      </TouchableOpacity>
       <Toast />
     </View>
   );
@@ -191,6 +100,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 16,
+    backgroundColor: "#fff",
     justifyContent: "center",
   },
   button: {
