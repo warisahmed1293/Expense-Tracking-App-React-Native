@@ -7,6 +7,7 @@ const COLORS = {
     TRANSACTION_GREEN: "#25A969",
     PRIMARY_BLACK: "#222222",
     PRIMARY_GREY: "#666666",
+    SECONDARY_WHITE: "white",
 };
 
 export default COLORS;

@@ -2,10 +2,10 @@ import React from "react";
 import { ScrollView, View, ImageBackground, StyleSheet } from "react-native";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import { StackNavigationProp } from "@react-navigation/stack";
-import ExpenseInputCard from "../components/ExpenseScreen/ExpenseInputCard";
-import IncomeInputCard from "../components/ExpenseScreen/IncomeInputCard";
-import TopNavbar from "../components/TopNavbar";
-import { DisplayFlex } from "../components/styledComponents";
+import ExpenseInputCard from "../../components/ExpenseScreen/ExpenseInputCard";
+import IncomeInputCard from "../../components/ExpenseScreen/IncomeInputCard";
+import TopNavbar from "../../components/TopNavbar";
+import { DisplayFlex } from "../../components/styledComponents";
 
 type ExpenseStackParamList = {
     ExpenseScreen: undefined;
@@ -38,7 +38,7 @@ const ExpenseScreen: React.FC<ExpenseProps> = ({ navigation }) => {
         <ScrollView >
             <DisplayFlex className="bg-white">
                 <ImageBackground
-                    source={require("../assets/top_section.png")}
+                    source={require("../../assets/top_section.png")}
                     resizeMode="cover"
                     className="w-full h-[275px]"
                 >
@@ -51,7 +51,6 @@ const ExpenseScreen: React.FC<ExpenseProps> = ({ navigation }) => {
                     />
                 </ImageBackground>
 
-                {/* Tab Navigator */}
                 <View className="absolute bg-white w-[400px] h-[650] rounded-3xl py-5 top-28" style={styles.shadow}>
                     <Tab.Navigator
                         initialRouteName="Income"

@@ -1,18 +1,18 @@
 /* eslint-disable react/no-unstable-nested-components */
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import HomeScreen from "../screens/HomeScreen";
 import StatisticsScreen from "../screens/StatisticsScreen";
 import WalletScreen from "../screens/WalletScreen";
-import ProfileScreen from "../screens/ProfileScreen";
 import { ICONS } from "../constant/icons";
 import Onboarding from "../screens/Onboarding";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import SignInScreen from "../authentication/LoginUser";
 import RegisterScreen from "../authentication/RegistrationUser";
-import ExpenseScreen from "../screens/ExpenseScreen";
 import { GestureResponderEvent, StyleSheet, TouchableOpacity, View } from "react-native";
 import Icon from "../components/Icon";
+import HomeScreen from "../screens/HomeScreen/HomeScreen";
+import ExpenseScreen from '../screens/ExpenseScreen/ExpenseScreen';
+import ProfileScreen from '../screens/ProfileScreen/ProfileScreen';
 
 
 const Tab = createBottomTabNavigator();
