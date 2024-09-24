@@ -13,6 +13,7 @@ import Icon from "../components/Icon";
 import HomeScreen from "../screens/HomeScreen/HomeScreen";
 import ExpenseScreen from '../screens/ExpenseScreen/ExpenseScreen';
 import ProfileScreen from '../screens/ProfileScreen/ProfileScreen';
+import SignupScreen from '../screens/SignupScreen';
 
 
 const Tab = createBottomTabNavigator();
@@ -64,8 +65,9 @@ const AppNavigator = () => {
             <Stack.Screen name="Navigation" component={Navigation} />
             <Stack.Screen name="Onboarding" component={Onboarding} />
             <Stack.Screen name="Signin" component={SignInScreen} />
-            <Stack.Screen name="Signup" component={RegisterScreen} />
+            <Stack.Screen name="Signup" component={SignupScreen} />
             <Stack.Screen name="Home" component={HomeScreen} />
+            <Stack.Screen name="Statistics" component={StatisticsScreen} />
 
 
         </Stack.Navigator>
@@ -77,7 +79,7 @@ export default AppNavigator;
 
 const styles = StyleSheet.create({
     plusButton: {
-        top: -20, // Adjust position to suit your design
+        top: -20,
         justifyContent: "center",
         alignItems: "center",
     },

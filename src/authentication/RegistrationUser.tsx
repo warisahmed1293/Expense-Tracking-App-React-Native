@@ -10,6 +10,7 @@ import {
   handleGoogleSignIn,
   configureGoogleSignIn
 } from './registration';
+import Icon from '../components/Icon';
 
 const RegisterScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
   const [name, setName] = useState<string>("");
@@ -37,13 +38,26 @@ const RegisterScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
 
       <InputField placeholder="Password" value={password} onChangeText={setPassword} secureTextEntry />
       <View className="my-3" />
-
-      <TouchableOpacity style={styles.uploadButton} onPress={() => pickImageFromGallery(setProfileImageUri)}>
-        <StyledText className="text-center text-[16px] text-gray-700">Pick Image from Gallery</StyledText>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.uploadButton} onPress={() => captureImageFromCamera(setProfileImageUri)}>
-        <StyledText className="text-center text-[16px] text-gray-700">Capture Image from Camera</StyledText>
-      </TouchableOpacity>
+      <View style={styles.buttonContainer}>
+        <TouchableOpacity
+          style={styles.touchable} onPress={() => pickImageFromGallery(setProfileImageUri)}
+        >
+          <Icon type="solid" name="PlusCircleIcon" color="grey" />
+          <StyledText fontWeight="bold" color="grey">
+            Choose Image from Gallery
+          </StyledText>
+        </TouchableOpacity>
+      </View>
+      <View style={styles.buttonContainer}>
+        <TouchableOpacity
+          style={styles.touchable} onPress={() => captureImageFromCamera(setProfileImageUri)}
+        >
+          <Icon type="solid" name="PlusCircleIcon" color="grey" />
+          <StyledText fontWeight="bold" color="grey">
+            Capture Image from Camera
+          </StyledText>
+        </TouchableOpacity>
+      </View>
 
       {profileImageUri && (
         <Image source={{ uri: profileImageUri }} style={styles.profileImage} />
@@ -100,8 +114,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 16,
+    paddingTop: 100,
     backgroundColor: "#fff",
-    justifyContent: "center",
   },
   button: {
     shadowColor: "black",
@@ -110,19 +124,28 @@ const styles = StyleSheet.create({
     shadowRadius: 1,
     elevation: 5,
   },
-  uploadButton: {
-    marginVertical: 10,
-    padding: 10,
-    backgroundColor: "#e0e0e0",
-    borderRadius: 8,
-    alignItems: "center",
-  },
   profileImage: {
     width: 100,
     height: 100,
     borderRadius: 50,
     alignSelf: "center",
     marginTop: 20,
+  },
+  buttonContainer: {
+    justifyContent: "center",
+    alignItems: "center",
+    marginVertical: 10,
+  },
+  touchable: {
+    width: "75%",
+    borderColor: "gray",
+    borderWidth: 2,
+    borderStyle: "dashed",
+    borderRadius: 10,
+    padding: 8,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#f8f8f8",
   },
 });
 

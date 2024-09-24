@@ -64,9 +64,6 @@ const ProfileScreen: React.FC<ProfileScreenProps> = ({ navigation }) => {
                         </View>
                     )}
                 </View>
-                <TouchableOpacity onPress={handleLogout} className="bg-TEXT_GREEN py-[16px] w-[75%] rounded-full self-center mt-48 py-10">
-                    <StyledText color="white" className="text-center">Logout</StyledText>
-                </TouchableOpacity>
             </DisplayFlex>
         </View>
     );
