@@ -35,7 +35,7 @@ const IncomeTab = () => {
 
 const ExpenseScreen: React.FC<ExpenseProps> = ({ navigation }) => {
     return (
-        <ScrollView >
+        <ScrollView className='bg-white' >
             <DisplayFlex className="bg-white">
                 <ImageBackground
                     source={require("../../assets/top_section.png")}
@@ -51,7 +51,7 @@ const ExpenseScreen: React.FC<ExpenseProps> = ({ navigation }) => {
                     />
                 </ImageBackground>
 
-                <View className="absolute bg-white w-[400px] h-[650] rounded-3xl py-5 top-28" style={styles.shadow}>
+                <View className="absolute bg-white w-[350px] h-[650] rounded-3xl py-5 top-28" style={styles.shadow}>
                     <Tab.Navigator
                         initialRouteName="Income"
                         tabBarPosition="top"

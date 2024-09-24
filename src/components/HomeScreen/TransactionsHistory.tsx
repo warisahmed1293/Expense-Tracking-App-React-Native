@@ -5,7 +5,7 @@ import TransactionHistoryMain from "./TransactionHistoryMain";
 import firestore from "@react-native-firebase/firestore";
 import auth from "@react-native-firebase/auth";
 
-type TransactionHolderType = "Upwork" | "Paypal" | "Youtube" | "Spotify" | "Netflix" | "Starbucks" | "Electricity" | "Fiverr" | "Rent";
+type TransactionHolderType = "Upwork" | "Paypal" | "Youtube" | "Spotify" | "Netflix" | "Starbucks" | "Electricity" | "Fiverr" | "Rent" | "Waris" | "Shahin" | "Ahmed" | "Hossam" | "Ali";
 
 interface Transaction {
     id: string;
@@ -25,6 +25,11 @@ const iconMapping: Record<TransactionHolderType, any> = {
     Electricity: require("../../assets/icons/electricity.png"),
     Fiverr: require("../../assets/icons/fiverr.png"),
     Rent: require("../../assets/icons/houserent.png"),
+    Waris: require("../../assets/icons/profileImage.png"),
+    Shahin: require("../../assets/icons/profileImage2.png"),
+    Ahmed: require("../../assets/icons/profileImage3.png"),
+    Hossam: require("../../assets/icons/profileImage4.png"),
+    Ali: require("../../assets/icons/profileImage5.png"),
 };
 
 const TransactionsHistory: React.FC = () => {

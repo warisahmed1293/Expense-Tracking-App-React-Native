@@ -92,6 +92,11 @@ export const DropDownExpenseIcons = [
     title: 'Rent',
     icon: require('../assets/icons/houserent.png'),
   },
+  {
+    id: 8,
+    title: 'Transfer',
+    icon: require('../assets/icons/profileImage.png'),
+  },
 ];
 
 export const DropDownIncomeIcons = [
@@ -104,5 +109,33 @@ export const DropDownIncomeIcons = [
     id: 2,
     title: 'Fiverr',
     icon: require('../assets/icons/fiverr.png'),
+  },
+];
+
+export const transferReceiver = [
+  {
+    id: 1,
+    title: 'Waris',
+    icon: require('../assets/icons/profileImage.png'),
+  },
+  {
+    id: 2,
+    title: 'Shahin',
+    icon: require('../assets/icons/profileImage2.png'),
+  },
+  {
+    id: 3,
+    title: 'Ahmed',
+    icon: require('../assets/icons/profileImage3.png'),
+  },
+  {
+    id: 4,
+    title: 'Hossam',
+    icon: require('../assets/icons/profileImage4.png'),
+  },
+  {
+    id: 5,
+    title: 'Ali',
+    icon: require('../assets/icons/profileImage5.png'),
   },
 ];

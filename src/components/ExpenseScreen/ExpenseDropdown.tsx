@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Modal, View, TouchableOpacity, Text, FlatList, Image } from "react-native";
+import { Modal, View, TouchableOpacity, Text, FlatList, Image, ScrollView } from "react-native";
 import Icon from "../Icon";
 
 interface DropdownItem {

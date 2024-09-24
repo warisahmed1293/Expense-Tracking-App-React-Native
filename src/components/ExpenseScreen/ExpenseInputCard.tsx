@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { View, TouchableOpacity, StyleSheet } from "react-native";
 import ExpenseDropdown from "./ExpenseDropdown";
-import { DropDownExpenseIcons } from "../../constant/dataDummy";
+import { DropDownExpenseIcons, transferReceiver } from "../../constant/dataDummy";
 import { DisplayFlex, StyledText } from "../styledComponents";
 import InputField from "../InputField";
 import FileUpload from "./FileUpload";
@@ -58,6 +58,7 @@ const ExpenseInputCard: React.FC = () => {
         const transactionData = {
             id: Date.now().toString(),
             transactionHolder: selectedItem?.title,
+            transcationReceiver: "",
             amount,
             fileName,
             date: selectedDate.toDateString(),
@@ -109,6 +110,17 @@ const ExpenseInputCard: React.FC = () => {
                         placeholder="Select an expense"
                     />
                 </View>
+                {selectedItem?.title === 'Transfer' && (
+                    <View className="my-3 w-72 h-[85px] justify-between">
+                        <StyledText color="black">To</StyledText>
+                        <ExpenseDropdown
+                            items={transferReceiver}
+                            onSelect={handleSelectItem}
+                            selectedItem={selectedItem}
+                            placeholder="Select an expense"
+                        />
+                    </View>
+                )}
                 <View className="my-3 w-72 h-[85px] justify-between">
                     <StyledText color="black">Amount</StyledText>
                     <InputField
