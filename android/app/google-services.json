@@ -12,7 +12,12 @@
           "package_name": "com.monoapp"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "327304051789-3mbatsbqrg62ev3fcp0efgoh9c84misb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyALn560nCyl9RJKj5VHsdIvpXwyjoVEI8o"
@@ -20,7 +25,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "327304051789-3mbatsbqrg62ev3fcp0efgoh9c84misb.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }

@@ -49,7 +49,7 @@ const HomeScreen: React.FC<{ route: any }> = () => {
                         </TouchableOpacity>
                     </DisplayFlex>
                 </ImageBackground>
-                <View className="absolute bottom-[-60] w-[100%] px-5">
+                <View className="absolute bottom-[-70] w-[100%] px-5">
                     <BalanceCard totalBalance={totalBalance} income={income} expense={expense} />
                 </View>
             </DisplayFlex>

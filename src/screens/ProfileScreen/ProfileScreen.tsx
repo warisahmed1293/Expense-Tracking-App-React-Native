@@ -1,20 +1,24 @@
-import { Image, ImageBackground, TouchableOpacity, View } from "react-native";
-import React, { useEffect, useState } from "react";
+import { Image, ImageBackground, TouchableOpacity, View, ActivityIndicator } from "react-native";
+import React from "react";
 import { DisplayFlex, StyledText } from "../../components/styledComponents";
 import Icon from "../../components/Icon";
 import { NavigationProp } from "@react-navigation/native";
 import COLORS from "../../constant/colors";
 import { useProfileScreenLogic } from '.';
+import auth from "@react-native-firebase/auth";
 
-
-type ProfileScreenPropos = {
+type ProfileScreenProps = {
     navigation: NavigationProp<any>;
 };
 
-const ProfileScreen: React.FC<ProfileScreenPropos> = ({ navigation }) => {
-    const { userName, handlerName } = useProfileScreenLogic();
+const ProfileScreen: React.FC<ProfileScreenProps> = ({ navigation }) => {
+    const { userName, handlerName, profileImage, loading } = useProfileScreenLogic();
+    const [hasNotification] = React.useState<boolean>(true);
 
-    const [hasNotification] = useState<boolean>(true);
+    const handleLogout = async () => {
+        await auth().signOut();
+        navigation.navigate("Onboarding");
+    };
 
     return (
         <View>
@@ -41,13 +45,28 @@ const ProfileScreen: React.FC<ProfileScreenPropos> = ({ navigation }) => {
                 </ImageBackground>
                 <View className="absolute top-48 justify-center items-center">
                     <View className="w-[130px] h-[130px] bg-white rounded-full justify-center items-center">
-                        <Image source={require("../../assets/icons/profileImage.png")} className="w-[100px] h-[100px] rounded-full" />
+                        {loading ? (
+                            <ActivityIndicator size="large" color={COLORS.PRIMARY_BLACK} />
+                        ) : (
+                            <Image source={{ uri: profileImage }} className="w-[100px] h-[100px] rounded-full" />
+                        )}
                     </View>
-                    <View>
-                        <StyledText color={COLORS.PRIMARY_BLACK} fontSize="24px" fontWeight="bold" className="text-center">{userName || "User"}</StyledText>
-                        <StyledText color={COLORS.TEXT_GREEN} fontSize="16px" fontWeight="bold" className="text-center">{handlerName || "@iamuser"}</StyledText>
-                    </View>
+                    {loading ? (
+                        <ActivityIndicator size="large" color={COLORS.PRIMARY_BLACK} />
+                    ) : (
+                        <View>
+                            <StyledText color={COLORS.PRIMARY_BLACK} fontSize="24px" fontWeight="bold" className="text-center">
+                                {userName || "User"}
+                            </StyledText>
+                            <StyledText color={COLORS.TEXT_GREEN} fontSize="16px" fontWeight="bold" className="text-center">
+                                {handlerName || "@iamuser"}
+                            </StyledText>
+                        </View>
+                    )}
                 </View>
+                <TouchableOpacity onPress={handleLogout} className="bg-TEXT_GREEN py-[16px] w-[75%] rounded-full self-center mt-48 py-10">
+                    <StyledText color="white" className="text-center">Logout</StyledText>
+                </TouchableOpacity>
             </DisplayFlex>
         </View>
     );

@@ -32,7 +32,12 @@ type TransactionHolderType =
     | "Starbucks"
     | "Electricity"
     | "Fiverr"
-    | "Rent";
+    | "Rent"
+    | "Waris"
+    | "Shahin"
+    | "Ahmed"
+    | "Hossam"
+    | "Ali";
 
 const iconMapping: Record<TransactionHolderType, any> = {
     Upwork: require("../../assets/icons/upwork.png"),
@@ -44,6 +49,11 @@ const iconMapping: Record<TransactionHolderType, any> = {
     Electricity: require("../../assets/icons/electricity.png"),
     Fiverr: require("../../assets/icons/fiverr.png"),
     Rent: require("../../assets/icons/houserent.png"),
+    Waris: require("../../assets/icons/profileImage.png"),
+    Shahin: require("../../assets/icons/profileImage2.png"),
+    Ahmed: require("../../assets/icons/profileImage3.png"),
+    Hossam: require("../../assets/icons/profileImage4.png"),
+    Ali: require("../../assets/icons/profileImage5.png"),
 };
 
 const TopTransaction: React.FC<TopTransactionProps> = ({ transactionType, sortOrder, color }) => {

@@ -59,7 +59,10 @@ const DataChartIncome: React.FC = () => {
     }, []);
 
     if (loading) {
-        return <ActivityIndicator size="large" color="#0000ff" />;
+        return (
+            <View className='items-center justify-center self-center' >
+                <ActivityIndicator size="large" color="black" />
+            </View>);
     }
 
     return (
