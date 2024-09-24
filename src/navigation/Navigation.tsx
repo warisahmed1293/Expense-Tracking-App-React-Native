@@ -68,8 +68,6 @@ const AppNavigator = () => {
             <Stack.Screen name="Signup" component={SignupScreen} />
             <Stack.Screen name="Home" component={HomeScreen} />
             <Stack.Screen name="Statistics" component={StatisticsScreen} />
-
-
         </Stack.Navigator>
     );
 };
