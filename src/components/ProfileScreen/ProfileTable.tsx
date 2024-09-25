@@ -1,19 +1,26 @@
-import { View, Text } from 'react-native'
-import React from 'react'
-import { StyledText } from '../styledComponents'
-import Icon from '../Icon'
+import { View, Text } from 'react-native';
+import React from 'react';
+import Icon from '../Icon';
+import * as SolidIcons from "react-native-heroicons/solid";
+import * as OutlineIcons from "react-native-heroicons/outline";
+import COLORS from '../../constant/colors';
+
+type IconName = keyof typeof SolidIcons | keyof typeof OutlineIcons;
 
 interface ProfileTableProps {
-    icon: string
-    title: string
-}
-const ProfileTable: React.FC<ProfileTableProps> = ({ icon = "EyeSlashIcon", title, }) => {
-    return (
-        <View className='flex-row items-center self-start justify-around w-40'>
-            <Icon name={icon} size={32} color="#000" />
-            <StyledText color='black' fontWeight='bold' fontSize='18px'>{title}</StyledText>
-        </View>
-    )
+    icon?: IconName;
+    title: string;
 }
 
-export default ProfileTable
+const ProfileTable: React.FC<ProfileTableProps> = ({ icon, title }) => {
+    return (
+        <View className='flex-row items-center justify-between self-start p-4 w-[100%]'>
+            {icon && <Icon name={icon} size={32} color={COLORS.PRIMARY_GREY} type='solid' />}
+            <View className='flex-1 px-5'>
+                <Text className='font-bold text-PRIMARY_GREY text-left'>{title}</Text>
+            </View>
+        </View>
+    );
+};
+
+export default ProfileTable;

@@ -14,6 +14,7 @@ import HomeScreen from "../screens/HomeScreen/HomeScreen";
 import ExpenseScreen from '../screens/ExpenseScreen/ExpenseScreen';
 import ProfileScreen from '../screens/ProfileScreen/ProfileScreen';
 import SignupScreen from '../screens/SignupScreen';
+import TransactionReciptScreen from '../screens/TransactionReciptScreen/TransactionReciptScreen';
 
 
 const Tab = createBottomTabNavigator();
@@ -68,6 +69,12 @@ const AppNavigator = () => {
             <Stack.Screen name="Signup" component={SignupScreen} />
             <Stack.Screen name="Home" component={HomeScreen} />
             <Stack.Screen name="Statistics" component={StatisticsScreen} />
+            <Stack.Screen
+                name="TransactionDetail"
+                component={TransactionReciptScreen}
+                initialParams={{ /* provide initial params if any */ }}
+            />
+
         </Stack.Navigator>
     );
 };

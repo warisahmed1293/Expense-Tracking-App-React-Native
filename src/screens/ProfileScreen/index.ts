@@ -10,6 +10,43 @@ export const useProfileScreenLogic = () => {
   const [profileImage, setProfileImage] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(true);
 
+  const tableData = [
+    {
+      id: 1,
+      title: 'Invite Freinds',
+      icon: 'ShareIcon',
+    },
+    {
+      id: 2,
+      title: 'Account Info',
+      icon: 'UserIcon',
+    },
+    {
+      id: 3,
+      title: 'Persnol Info',
+      icon: 'UsersIcon',
+    },
+    {
+      id: 4,
+      title: 'Logout',
+      icon: 'ArrowTopRightOnSquareIcon',
+    },
+    {
+      id: 5,
+      title: 'Message Center',
+      icon: 'ChatBubbleBottomCenterTextIcon',
+    },
+    {
+      id: 6,
+      title: 'Login and Security',
+      icon: 'LockClosedIcon',
+    },
+    {
+      id: 7,
+      title: 'Data and Privacy',
+      icon: 'ShieldExclamationIcon',
+    },
+  ];
   useEffect(() => {
     const fetchUserData = async () => {
       const user: FirebaseAuthTypes.User | null = auth().currentUser;
@@ -54,5 +91,6 @@ export const useProfileScreenLogic = () => {
     handlerName,
     profileImage,
     loading,
+    tableData,
   };
 };

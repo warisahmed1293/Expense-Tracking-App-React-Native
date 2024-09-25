@@ -1,4 +1,4 @@
-import { Image, ImageBackground, TouchableOpacity, View, ActivityIndicator } from "react-native";
+import { Image, ImageBackground, TouchableOpacity, View, ActivityIndicator, ScrollView, StyleSheet, Modal, Share } from "react-native";
 import React from "react";
 import { DisplayFlex, StyledText } from "../../components/styledComponents";
 import Icon from "../../components/Icon";
@@ -13,12 +13,39 @@ type ProfileScreenProps = {
 };
 
 const ProfileScreen: React.FC<ProfileScreenProps> = ({ navigation }) => {
-    const { userName, handlerName, profileImage, loading } = useProfileScreenLogic();
+    const { userName, handlerName, profileImage, loading, tableData } = useProfileScreenLogic();
     const [hasNotification] = React.useState<boolean>(true);
+    const [isLoggingOut, setIsLoggingOut] = React.useState<boolean>(false);
+    const [isSharing, setIsSharing] = React.useState<boolean>(false);
 
     const handleLogout = async () => {
-        await auth().signOut();
-        navigation.navigate("Onboarding");
+        setIsLoggingOut(true);
+        setTimeout(async () => {
+            await auth().signOut();
+            setIsLoggingOut(false);
+            navigation.navigate("Onboarding");
+        }, 2000);
+    };
+
+    const onShare = async () => {
+        setIsSharing(true);
+        try {
+            const result = await Share.share({
+                message: 'Check out this amazing app: https://creativeartistz.co',
+                title: 'Download our app',
+            });
+
+            if (result.action === Share.sharedAction) {
+                if (result.activityType) {
+                } else {
+                }
+            } else if (result.action === Share.dismissedAction) {
+            }
+        } catch (error) {
+            console.error('Error sharing', error);
+        } finally {
+            setIsSharing(false);
+        }
     };
 
     return (
@@ -68,13 +95,52 @@ const ProfileScreen: React.FC<ProfileScreenProps> = ({ navigation }) => {
                     </View>
                 </View>
             </View>
-            <View >
-                <TouchableOpacity>
-                    <ProfileTable icon="ShareIcon" title="Profile" />
-                </TouchableOpacity>
-            </View>
+
+            <ScrollView className="mt-28 px-4" showsVerticalScrollIndicator={false}>
+                <View className="pt-2">
+                    {tableData.map((item) => (
+                        <TouchableOpacity
+                            key={item.id}
+                            onPress={() => {
+                                if (item.title === "Logout") {
+                                    handleLogout();
+                                } else if (item.title === "Invite Freinds") {
+                                    onShare();
+                                }
+                            }}
+                        >
+                            <ProfileTable icon={item.icon} title={item.title} />
+                        </TouchableOpacity>
+                    ))}
+                </View>
+            </ScrollView>
+
+            {isLoggingOut && (
+                <Modal visible={isLoggingOut} transparent={true} animationType="fade">
+                    <View style={styles.loadingOverlay}>
+                        <ActivityIndicator size="large" color={COLORS.SECONDARY_WHITE} />
+                    </View>
+                </Modal>
+            )}
+
+            {isSharing && ( // Show loader when sharing
+                <Modal visible={isSharing} transparent={true} animationType="fade">
+                    <View style={styles.loadingOverlay}>
+                        <ActivityIndicator size="large" color={COLORS.SECONDARY_WHITE} />
+                    </View>
+                </Modal>
+            )}
         </>
     );
 };
+
+const styles = StyleSheet.create({
+    loadingOverlay: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: 'rgba(0, 0, 0, 0.6)',
+    },
+});
 
 export default ProfileScreen;

@@ -4,13 +4,14 @@ import { DisplayFlex, StyledText } from "../styledComponents";
 import TransactionHistoryMain from "./TransactionHistoryMain";
 import firestore from "@react-native-firebase/firestore";
 import auth from "@react-native-firebase/auth";
+import { StackNavigationProp } from '@react-navigation/stack';
 
 type TransactionHolderType = "Upwork" | "Paypal" | "Youtube" | "Spotify" | "Netflix" | "Starbucks" | "Electricity" | "Fiverr" | "Rent" | "Waris" | "Shahin" | "Ahmed" | "Hossam" | "Ali";
 
 interface Transaction {
     id: string;
     transactionHolder: TransactionHolderType;
-    date: string; // Ensure this is in a format that can be parsed by Date
+    date: string;
     amount: number;
     type: string;
 }
@@ -32,7 +33,7 @@ const iconMapping: Record<TransactionHolderType, any> = {
     Ali: require("../../assets/icons/profileImage5.png"),
 };
 
-const TransactionsHistory: React.FC = () => {
+const TransactionsHistory: React.FC<{ navigation: StackNavigationProp<any> }> = ({ navigation }) => {
     const [transactions, setTransactions] = useState<Transaction[]>([]);
     const [loading, setLoading] = useState(true);
     const [showAll, setShowAll] = useState(false);
@@ -56,6 +57,7 @@ const TransactionsHistory: React.FC = () => {
                         new Date(b.date).getTime() - new Date(a.date).getTime()
                     );
                     setTransactions(sortedTransactions);
+                    console.log("Transactions:", sortedTransactions);
                 }
             } else {
                 console.log("No transactions found.");
@@ -93,11 +95,13 @@ const TransactionsHistory: React.FC = () => {
                     displayedTransactions.map((item) => (
                         <TransactionHistoryMain
                             key={item.id}
+                            navigation={navigation}
                             TransactionHolder={item.transactionHolder}
                             TransactionTime={item.date}
                             TransactionValue={item.amount}
                             TransactionHolderIcon={iconMapping[item.transactionHolder]}
                             type={item.type}
+                            id={item.id}
                         />
                     ))
                 ) : (

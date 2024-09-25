@@ -1,23 +1,28 @@
-import { Image, View } from "react-native";
+import { Image, TouchableOpacity, View } from "react-native";
 import React from "react";
 import { StyledText } from "../styledComponents";
 import COLORS from "../../constant/colors";
 import moment from "moment";
+import { StackNavigationProp } from '@react-navigation/stack';
 
 interface TransactionHistoryMainProps {
+    navigation: StackNavigationProp<any>; // Update this to the correct type based on your navigation structure
     TransactionHolder: string;
     TransactionTime: string;
     TransactionValue: number;
     TransactionHolderIcon: number;
     type: string;
+    id: string; // Add the ID prop
 }
 
 const TransactionHistoryMain: React.FC<TransactionHistoryMainProps> = ({
+    navigation,
     TransactionHolder,
     TransactionTime,
     TransactionValue,
     TransactionHolderIcon,
     type,
+    id, // Receive ID as prop
 }) => {
 
     const getTransactionColor = () => {
@@ -25,15 +30,14 @@ const TransactionHistoryMain: React.FC<TransactionHistoryMainProps> = ({
     };
 
     const getFormattedDate = (transactionDate: string) => {
-        // Normalize date format
         const normalizedDate = moment(
             transactionDate,
             ["ddd MMM DD YYYY", "MM/DD/YYYY", "ddd MMM DD YYYY HH:mm:ss ZZ", "ddd MMM DD YYYY HH:mm:ss"],
-            true // strict parsing
+            true
         );
 
         if (!normalizedDate.isValid()) {
-            return "Invalid Date"; // handle invalid date format
+            return "Invalid Date";
         }
 
         const today = moment().startOf("day");
@@ -60,8 +64,20 @@ const TransactionHistoryMain: React.FC<TransactionHistoryMainProps> = ({
         return `${sign} $${formatNumber(TransactionValue)}`;
     };
 
+    const handlePress = () => {
+        navigation.navigate("TransactionDetail", {
+            transactionId: id,
+            transactionHolder: TransactionHolder,
+            transactionTime: TransactionTime,
+            transactionValue: TransactionValue,
+            transactionType: type,
+            TransactionHolderIcon: TransactionHolderIcon,
+        });
+
+    };
+
     return (
-        <View className="flex flex-row items-center justify-between py-2">
+        <TouchableOpacity className="flex flex-row items-center justify-between py-2" onPress={handlePress}>
             <View className="flex flex-row items-center">
                 <View className="w-14 h-14 bg-slate-200 rounded-md items-center justify-center p-2 mr-3">
                     <Image source={TransactionHolderIcon} resizeMode="contain" className="w-full h-full" />
@@ -80,7 +96,7 @@ const TransactionHistoryMain: React.FC<TransactionHistoryMainProps> = ({
                     {getFormattedTransactionValue()}
                 </StyledText>
             </View>
-        </View>
+        </TouchableOpacity>
     );
 };
 

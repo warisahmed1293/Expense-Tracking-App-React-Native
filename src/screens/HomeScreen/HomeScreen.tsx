@@ -7,7 +7,7 @@ import BalanceCard from "../../components/HomeScreen/BalanceCard";
 import TransactionsHistory from "../../components/HomeScreen/TransactionsHistory";
 import SendAgainTransictions from "../../components/HomeScreen/SendAgainTransictions";
 
-const HomeScreen: React.FC<{ route: any }> = () => {
+const HomeScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
     const { userName, income, expense, totalBalance, loading, greeting } = useHomeScreenLogic();
 
     const [hasNotification] = React.useState<boolean>(true);
@@ -54,7 +54,7 @@ const HomeScreen: React.FC<{ route: any }> = () => {
                 </View>
             </DisplayFlex>
             <View className="px-5 top-24">
-                <TransactionsHistory />
+                <TransactionsHistory navigation={navigation} />
             </View>
             <View className="px-5 top-24 pb-28">
                 <SendAgainTransictions />
