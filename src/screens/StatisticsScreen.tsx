@@ -8,6 +8,7 @@ import DataChartExpense from "../components/StatisticsScreen/DataChartExpense";
 import GlobalDropdown from "../components/GlobalDropDown";
 import TopTransaction from "../components/StatisticsScreen/TopTransaction";
 import AnimatedTopButton from "../components/StatisticsScreen/AnimtedTopButtons";
+import MyChart from '../components/StatisticsScreen/DataChart';
 
 type OnboardingProps = {
     navigation: NavigationProp<any>;
@@ -59,15 +60,25 @@ const StatisticsScreen: React.FC<OnboardingProps> = ({ navigation }) => {
                 <ScrollView horizontal className="pt-6 pb-4">
                     {chartType === "expense" ? <DataChartExpense /> : <DataChartIncome />}
                 </ScrollView>
+
             </View>
-            <View className="bg-white pb-24">
-                <View className="flex flex-row justify-between px-3 py-3">
-                    <StyledText fontWeight="bold" fontSize="18px" color="black">Top Spending</StyledText>
+            {/* <MyChart /> */}
+            <View className="bg-white pb-48">
+                <View className="flex flex-row justify-between items-center self-center px-3 py-3 w-96">
+                    <StyledText fontWeight="bold" fontSize="18px" color="black">
+                        {
+                            chartType === "expense"
+                                ? "Top Expense"
+                                : "Top Income"
+                        }
+                    </StyledText>
                     <TouchableOpacity onPress={toggleSortOrder}>
                         <Icon name="ArrowsUpDownIcon" color="black" type="solid" size={24} />
                     </TouchableOpacity>
                 </View>
-                <TopTransaction transactionType={chartType} sortOrder={sortOrder} color={color} />
+                <View className='px-3 justify-center items-center self-center'>
+                    <TopTransaction transactionType={chartType} sortOrder={sortOrder} color={color} />
+                </View>
             </View>
         </>
     );

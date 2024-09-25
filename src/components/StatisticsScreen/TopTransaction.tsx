@@ -119,19 +119,19 @@ const TopTransaction: React.FC<TopTransactionProps> = ({ transactionType, sortOr
 
     const renderTopTransactions = () => {
         return transactions.slice(0, 3).map((transaction, index) => (
-            <TouchableOpacity key={index} className="flex-row items-center justify-between p-3 w-80">
+            <TouchableOpacity key={index} className="flex-row items-center justify-between self-center pb-5 w-[100%]">
                 <View className="flex-row items-center">
                     <Image
                         source={iconMapping[transaction.transactionHolder as TransactionHolderType]}
                         resizeMode="contain"
                         className="w-8 h-8"
                     />
-                    <StyledText className="flex-1 p-2" color="black" fontWeight="bold">
+                    <StyledText className="p-2" fontSize='18px' color="black" fontWeight="bold">
                         {transaction.transactionHolder}
                     </StyledText>
                 </View>
-                <StyledText color={color}>
-                    $ {transaction.totalAmount.toFixed(2)}
+                <StyledText color={color} fontSize='18px' fontWeight='bold'>
+                    {transactionType === "income" ? "+" : "-"}$ {transaction.totalAmount.toFixed(2)}
                 </StyledText>
             </TouchableOpacity>
         ));

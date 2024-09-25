@@ -8,7 +8,7 @@ export const useProfileScreenLogic = () => {
   const [userName, setUserName] = useState<string>('');
   const [handlerName, setHandlerName] = useState<string>('');
   const [profileImage, setProfileImage] = useState<string>('');
-  const [loading, setLoading] = useState<boolean>(true); // Loading state
+  const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -21,15 +21,18 @@ export const useProfileScreenLogic = () => {
 
           if (userDoc.exists) {
             setUserName(userDoc.data()?.name || '');
-            setProfileImage(userDoc.data()?.profileImageUrl || '');
+            setProfileImage(
+              userDoc.data()?.profileImageUrl ||
+                'https://img.icons8.com/?size=100&id=23242&format=png&color=000000',
+            );
           }
         } catch (error) {
           console.error('Error fetching user data:', error);
         } finally {
-          setLoading(false); // Set loading to false after fetching
+          setLoading(false);
         }
       } else {
-        setLoading(false); // Set loading to false if no user is logged in
+        setLoading(false);
       }
     };
 
@@ -44,12 +47,12 @@ export const useProfileScreenLogic = () => {
     }
 
     fetchUserData();
-  }, [userName]); // Added userName as a dependency
+  }, [userName]);
 
   return {
     userName,
     handlerName,
     profileImage,
-    loading, // Return loading state
+    loading,
   };
 };
