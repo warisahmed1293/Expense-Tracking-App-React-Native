@@ -6,13 +6,14 @@ import moment from "moment";
 import { StackNavigationProp } from '@react-navigation/stack';
 
 interface TransactionHistoryMainProps {
-    navigation: StackNavigationProp<any>; // Update this to the correct type based on your navigation structure
+    navigation: StackNavigationProp<any>;
     TransactionHolder: string;
     TransactionTime: string;
     TransactionValue: number;
     TransactionHolderIcon: number;
     type: string;
-    id: string; // Add the ID prop
+    TransactionRecipt: string | null;
+    id: string;
 }
 
 const TransactionHistoryMain: React.FC<TransactionHistoryMainProps> = ({
@@ -21,8 +22,9 @@ const TransactionHistoryMain: React.FC<TransactionHistoryMainProps> = ({
     TransactionTime,
     TransactionValue,
     TransactionHolderIcon,
+    TransactionRecipt,
     type,
-    id, // Receive ID as prop
+    id,
 }) => {
 
     const getTransactionColor = () => {
@@ -72,9 +74,10 @@ const TransactionHistoryMain: React.FC<TransactionHistoryMainProps> = ({
             transactionValue: TransactionValue,
             transactionType: type,
             TransactionHolderIcon: TransactionHolderIcon,
+            TransactionRecipt: TransactionRecipt,
         });
-
     };
+
 
     return (
         <TouchableOpacity className="flex flex-row items-center justify-between py-2" onPress={handlePress}>

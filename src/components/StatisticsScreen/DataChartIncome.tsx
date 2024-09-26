@@ -1,4 +1,4 @@
-import { View, ActivityIndicator } from "react-native";
+import { View, ActivityIndicator, Text, StyleSheet } from "react-native";
 import React, { useEffect, useState } from "react";
 import { LineChart } from "react-native-chart-kit";
 import firestore from "@react-native-firebase/firestore";
@@ -18,6 +18,7 @@ const DataChartIncome: React.FC = () => {
     const [incomeData, setIncomeData] = useState<number[]>([]);
     const [labels, setLabels] = useState<string[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
+    const [selectedPointIndex, setSelectedPointIndex] = useState<number | null>(null);
 
     useEffect(() => {
         const user = auth().currentUser;
@@ -34,15 +35,25 @@ const DataChartIncome: React.FC = () => {
             .onSnapshot((doc) => {
                 if (doc.exists) {
                     const data = doc.data() as TransactionData;
+                    console.log("Fetched data:", data);
+
                     if (data && data.transaction) {
                         let transactions = data.transaction;
                         transactions.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
-                        const incomes = transactions.filter(transaction => transaction.type === "income");
-                        const amounts = incomes.map(transaction => transaction.amount);
-                        const transactionLabels = incomes.map(transaction => transaction.date);
+                        const expenses = transactions.filter(transaction => transaction.type === "income");
+                        const amounts = expenses.map(transaction => Number(transaction.amount)); // Convert to number
+                        const transactionLabels = expenses.map(transaction => transaction.date);
+
+                        console.log("Filtered expenses:", expenses);
+                        console.log("Amounts:", amounts);
+                        console.log("Labels:", transactionLabels);
 
                         setIncomeData(amounts);
                         setLabels(transactionLabels);
+                    } else {
+                        console.log("No transactions found.");
+                        setIncomeData([]);
+                        setLabels([]);
                     }
                 } else {
                     console.log("No transactions found.");
@@ -58,17 +69,23 @@ const DataChartIncome: React.FC = () => {
         return () => unsubscribe();
     }, []);
 
+
+    const handleDataPointClick = (data: { index: number }) => {
+        setSelectedPointIndex(data.index);
+    };
+
     if (loading) {
         return (
-            <View className='items-center justify-center self-center' >
+            <View className='items-center justify-center self-center'>
                 <ActivityIndicator size="large" color="black" />
-            </View>);
+            </View>
+        );
     }
 
     return (
         <View>
             <LineChart
-                onDataPointClick={(data) => console.log(data)}
+                onDataPointClick={handleDataPointClick}
                 withDots={true}
                 withVerticalLabels={true}
                 withHorizontalLabels={true}
@@ -85,6 +102,7 @@ const DataChartIncome: React.FC = () => {
                         },
                     ],
                 }}
+
                 width={1000}
                 height={250}
                 yAxisLabel="$"
@@ -105,8 +123,31 @@ const DataChartIncome: React.FC = () => {
                 }}
                 bezier={true}
             />
+            {selectedPointIndex !== null && (
+                <View style={styles.tooltip}>
+                    <Text style={styles.tooltipText}>${incomeData[selectedPointIndex]}</Text>
+                </View>
+            )}
         </View>
     );
 };
+
+const styles = StyleSheet.create({
+    tooltip: {
+        position: 'absolute',
+        bottom: 60, // Adjust as necessary
+        left: '50%',
+        transform: [{ translateX: -50 }],
+        padding: 8,
+        backgroundColor: 'rgba(255, 255, 255, 0.9)',
+        borderRadius: 5,
+        elevation: 3,
+    },
+    tooltipText: {
+        fontSize: 16,
+        fontWeight: 'bold',
+        textAlign: 'center',
+    },
+});
 
 export default DataChartIncome;

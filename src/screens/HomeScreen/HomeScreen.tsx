@@ -12,9 +12,9 @@ const HomeScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
 
     const [hasNotification] = React.useState<boolean>(true);
 
-    if (loading) {
-        return <ActivityIndicator size="large" color="#0000ff" />;
-    }
+    // if (loading) {
+    //     return <ActivityIndicator size="large" color="#0000ff" />;
+    // }
 
     return (
         <ScrollView showsVerticalScrollIndicator={false} className="bg-white">

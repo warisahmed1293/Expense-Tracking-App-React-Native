@@ -14,6 +14,9 @@ interface Transaction {
     date: string;
     amount: number;
     type: string;
+    fileName: string | null;
+    filePath: string | null;
+
 }
 
 const iconMapping: Record<TransactionHolderType, any> = {
@@ -57,7 +60,6 @@ const TransactionsHistory: React.FC<{ navigation: StackNavigationProp<any> }> = 
                         new Date(b.date).getTime() - new Date(a.date).getTime()
                     );
                     setTransactions(sortedTransactions);
-                    console.log("Transactions:", sortedTransactions);
                 }
             } else {
                 console.log("No transactions found.");
@@ -77,6 +79,8 @@ const TransactionsHistory: React.FC<{ navigation: StackNavigationProp<any> }> = 
     }
 
     const displayedTransactions = showAll ? transactions : transactions.slice(0, 4);
+    transactions.map((item) => console.log(item.fileName));
+
 
     return (
         <ScrollView>
@@ -102,6 +106,7 @@ const TransactionsHistory: React.FC<{ navigation: StackNavigationProp<any> }> = 
                             TransactionHolderIcon={iconMapping[item.transactionHolder]}
                             type={item.type}
                             id={item.id}
+                            TransactionRecipt={item.fileName}
                         />
                     ))
                 ) : (

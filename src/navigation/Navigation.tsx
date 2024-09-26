@@ -72,7 +72,6 @@ const AppNavigator = () => {
             <Stack.Screen
                 name="TransactionDetail"
                 component={TransactionReciptScreen}
-                initialParams={{ /* provide initial params if any */ }}
             />
 
         </Stack.Navigator>

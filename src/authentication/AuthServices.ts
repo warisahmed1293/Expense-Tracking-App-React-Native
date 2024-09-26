@@ -12,3 +12,4 @@ export const loginUser = async (
     throw error;
   }
 };
+
