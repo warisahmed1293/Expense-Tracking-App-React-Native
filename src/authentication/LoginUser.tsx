@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, StyleSheet, TouchableOpacity } from "react-native";
+import { View, StyleSheet, TouchableOpacity, ActivityIndicator } from "react-native";
 import auth from "@react-native-firebase/auth";
 import InputField from "../components/InputField";
 import { StyledText } from "../components/styledComponents";
@@ -11,6 +11,14 @@ const SignInScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
     const [isSigningIn, setIsSigningIn] = useState<boolean>(false);
 
     const handleSignIn = async () => {
+        if (email.trim() === "" || password.trim() === "") {
+            Toast.show({
+                type: "error",
+                text1: "Error",
+                text2: "Please enter both email and password",
+            });
+            return;
+        }
         setIsSigningIn(true);
         try {
             const userCredential = await auth().signInWithEmailAndPassword(email, password);
@@ -59,9 +67,13 @@ const SignInScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
                 style={styles.button}
                 disabled={isSigningIn}
             >
-                <StyledText className="text-center text-[20px] text-white font-bold">
-                    Sign In
-                </StyledText>
+                {isSigningIn ? (
+                    <ActivityIndicator size="small" color="#FFF" />
+                ) : (
+                    <StyledText className="text-center text-[20px] text-white font-bold">
+                        Sign In
+                    </StyledText>
+                )}
             </TouchableOpacity>
             <Toast />
         </View>

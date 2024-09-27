@@ -38,30 +38,6 @@ const RegisterScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
 
       <InputField placeholder="Password" value={password} onChangeText={setPassword} secureTextEntry />
       <View className="my-3" />
-      <View style={styles.buttonContainer}>
-        <TouchableOpacity
-          style={styles.touchable} onPress={() => pickImageFromGallery(setProfileImageUri)}
-        >
-          <Icon type="solid" name="PlusCircleIcon" color="grey" />
-          <StyledText fontWeight="bold" color="grey">
-            Choose Image from Gallery
-          </StyledText>
-        </TouchableOpacity>
-      </View>
-      <View style={styles.buttonContainer}>
-        <TouchableOpacity
-          style={styles.touchable} onPress={() => captureImageFromCamera(setProfileImageUri)}
-        >
-          <Icon type="solid" name="PlusCircleIcon" color="grey" />
-          <StyledText fontWeight="bold" color="grey">
-            Capture Image from Camera
-          </StyledText>
-        </TouchableOpacity>
-      </View>
-
-      {profileImageUri && (
-        <Image source={{ uri: profileImageUri }} style={styles.profileImage} />
-      )}
 
       <TouchableOpacity
         className="bg-TEXT_GREEN py-[16px] w-[75%] rounded-full self-center mt-5"
@@ -114,7 +90,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 16,
-    paddingTop: 100,
+    paddingTop: 150,
     backgroundColor: "#fff",
   },
   button: {

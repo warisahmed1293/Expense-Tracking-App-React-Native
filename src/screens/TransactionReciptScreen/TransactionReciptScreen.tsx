@@ -57,38 +57,15 @@ const TransactionReciptScreen: React.FC<TransactionReciptScreenRouteProps> = ({ 
             const result = await RNFS.downloadFile({ fromUrl: url, toFile: localFilePath }).promise;
             setDownloading(true);
 
-            if (result.statusCode === 200) {
-                Alert.alert("Success", "Receipt downloaded successfully!");
-            } else {
+            result.statusCode === 200 ?
+                Alert.alert("Success", "Receipt downloaded successfully!") :
                 Alert.alert("Error", "Failed to download the receipt.");
-            }
+
         } catch (error) {
             console.error("Error downloading receipt:", error);
             Alert.alert("Error", "An error occurred while downloading the receipt.");
         } finally {
             setDownloading(false);
-        }
-    };
-
-    const colorChange = () => {
-        if (transactionType === "income") {
-            return { backgroundColor: 'rgba(76, 175, 80, 0.1)' };
-        } else {
-            return { backgroundColor: 'rgba(255, 0, 0, 0.1)' };
-        }
-    };
-    const transactionAmountName = () => {
-        if (transactionType === "income") {
-            return "Earnings";
-        } else {
-            return "Spending";
-        }
-    };
-    const fontColorChange = () => {
-        if (transactionType === "income") {
-            return (COLORS.TRANSACTION_GREEN);
-        } else {
-            return (COLORS.TRANSACTION_RED);
         }
     };
 
@@ -123,8 +100,10 @@ const TransactionReciptScreen: React.FC<TransactionReciptScreenRouteProps> = ({ 
                         <Image source={TransactionHolderIcon} className="w-16 h-16 p-4" resizeMode="contain" />
                     </View>
                     <View>
-                        <View className={`w-24 h-8 mt-3 items-center justify-center self-center rounded-full`} style={colorChange()}>
-                            <StyledText color={fontColorChange()} fontSize="18px" fontWeight="semibold" className='text-center'>
+                        <View className={`w-24 h-8 mt-3 items-center justify-center self-center rounded-full`} style={transactionType === "income" ?
+                            { backgroundColor: 'rgba(76, 175, 80, 0.1)' } :
+                            { backgroundColor: 'rgba(255, 0, 0, 0.1)' }}>
+                            <StyledText color={transactionType === "income" ? COLORS.TRANSACTION_GREEN : COLORS.TRANSACTION_RED} fontSize="18px" fontWeight="semibold" className='text-center'>
                                 {capitalizeTransactionType()}
                             </StyledText>
                         </View>
@@ -145,7 +124,7 @@ const TransactionReciptScreen: React.FC<TransactionReciptScreenRouteProps> = ({ 
                     <View className='pt-8'>
                         <View className='justify-between items-center flex-row mb-6'>
                             <StyledText fontSize='18px' fontWeight='bold' color={COLORS.PRIMARY_GREY}>Status:</StyledText>
-                            <StyledText color={fontColorChange()} fontSize='18px' fontWeight='bold'>{capitalizeTransactionType()}</StyledText>
+                            <StyledText color={transactionType === "income" ? COLORS.TRANSACTION_GREEN : COLORS.TRANSACTION_RED} fontSize='18px' fontWeight='bold'>{capitalizeTransactionType()}</StyledText>
                         </View>
                         <View className='justify-between items-center flex-row mb-6'>
                             <StyledText fontSize='18px' fontWeight='bold' color={COLORS.PRIMARY_GREY}>From:</StyledText>
@@ -157,7 +136,7 @@ const TransactionReciptScreen: React.FC<TransactionReciptScreenRouteProps> = ({ 
                         </View>
                         <View className='w-72 h-[1px] bg-[#DDDDDD] justify-between items-center flex-row self-center my-8' />
                         <View className='justify-between items-center flex-row'>
-                            <StyledText fontSize='18px' fontWeight='bold' color={COLORS.PRIMARY_GREY}>{transactionAmountName()}</StyledText>
+                            <StyledText fontSize='18px' fontWeight='bold' color={COLORS.PRIMARY_GREY}>{transactionType === "income" ? "Amount Received" : "Amount Spent"}</StyledText>
                             <StyledText fontSize='18px' fontWeight='bold' color={COLORS.PRIMARY_BLACK}>$ {formatNumber(transactionValue)}</StyledText>
                         </View>
                     </View>

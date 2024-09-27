@@ -6,6 +6,7 @@ import ExpenseInputCard from "../../components/ExpenseScreen/ExpenseInputCard";
 import IncomeInputCard from "../../components/ExpenseScreen/IncomeInputCard";
 import TopNavbar from "../../components/TopNavbar";
 import { DisplayFlex } from "../../components/styledComponents";
+import CustomTabBar from '../../components/ExpenseScreen/CustomTabBar';
 
 type ExpenseStackParamList = {
     ExpenseScreen: undefined;
@@ -53,19 +54,14 @@ const ExpenseScreen: React.FC<ExpenseProps> = ({ navigation }) => {
 
                 <View className="absolute bg-white w-[350px] h-[650] rounded-3xl py-5 top-28" style={styles.shadow}>
                     <Tab.Navigator
+                        tabBar={(props) => <CustomTabBar  {...props} />}
                         initialRouteName="Income"
-                        tabBarPosition="top"
                         screenOptions={{
-                            tabBarIndicatorStyle: { backgroundColor: "#438883" },
-                            tabBarActiveTintColor: "#408782",
-                            tabBarInactiveTintColor: "gray",
-                            tabBarStyle: { backgroundColor: "white" },
-                            tabBarLabelStyle: { fontSize: 14, fontWeight: "bold" },
+                            tabBarIndicatorStyle: { backgroundColor: "transparent" },
                         }}
-                        key={"tab"}
                     >
-                        <Tab.Screen name="Income" component={IncomeTab} key="income" />
-                        <Tab.Screen name="Expense" component={ExpenseTab} key="expense" />
+                        <Tab.Screen name="Income" component={IncomeTab} />
+                        <Tab.Screen name="Expense" component={ExpenseTab} />
                     </Tab.Navigator>
                 </View>
             </DisplayFlex>

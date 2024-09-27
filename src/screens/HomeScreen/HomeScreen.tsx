@@ -8,14 +8,9 @@ import TransactionsHistory from "../../components/HomeScreen/TransactionsHistory
 import SendAgainTransictions from "../../components/HomeScreen/SendAgainTransictions";
 
 const HomeScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
-    const { userName, income, expense, totalBalance, loading, greeting } = useHomeScreenLogic();
+    const { userName, income, expense, totalBalance, greeting } = useHomeScreenLogic();
 
     const [hasNotification] = React.useState<boolean>(true);
-
-    // if (loading) {
-    //     return <ActivityIndicator size="large" color="#0000ff" />;
-    // }
-
     return (
         <ScrollView showsVerticalScrollIndicator={false} className="bg-white">
             <DisplayFlex flex={1} direction="column" justifyContent="space-between">

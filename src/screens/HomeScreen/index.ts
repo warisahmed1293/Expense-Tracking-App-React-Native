@@ -1,6 +1,7 @@
 import {useEffect, useState} from 'react';
 import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 interface Transaction {
   amount: string;
@@ -55,7 +56,7 @@ export const useHomeScreenLogic = () => {
 
       const userDocRef = firestore().collection('transactions').doc(user.uid);
       return userDocRef.onSnapshot(
-        doc => {
+        async doc => {
           if (doc.exists) {
             const data = doc.data();
             let totalIncome = 0;
@@ -74,6 +75,11 @@ export const useHomeScreenLogic = () => {
 
             setIncome(totalIncome);
             setExpense(totalExpense);
+
+            const totalBalance = totalIncome - totalExpense;
+
+            // Store the total balance in AsyncStorage
+            await AsyncStorage.setItem('totalBalance', totalBalance.toString());
           } else {
             console.log('No transactions found');
           }
@@ -92,6 +98,7 @@ export const useHomeScreenLogic = () => {
   }, []);
 
   const totalBalance = income - expense;
+
   const greeting = getGreeting();
 
   return {

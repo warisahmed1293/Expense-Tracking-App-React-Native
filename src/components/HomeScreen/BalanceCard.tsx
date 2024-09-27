@@ -20,7 +20,7 @@ const BalanceCard = ({ totalBalance, income, expense }: BalanceCardProps) => {
             <View className="flex flex-row justify-between py-5 px-3">
                 <View className="">
                     <StyledText color="white" fontSize="24px" fontWeight="bold">Total Balance</StyledText>
-                    <StyledText color="white" fontSize="30px" fontWeight="bold">$ {formatNumber(totalBalance)}</StyledText>
+                    <StyledText color="white" fontSize="30px" fontWeight="bold" className='tracking-[-1px]'>$ {formatNumber(totalBalance)}</StyledText>
                 </View>
                 <TouchableOpacity className="">
                     <Icon name="EllipsisHorizontalIcon" color="white" type="solid" />
@@ -34,7 +34,7 @@ const BalanceCard = ({ totalBalance, income, expense }: BalanceCardProps) => {
                         </View>
                         <StyledText color="white">Income</StyledText>
                     </View>
-                    <StyledText color="white" fontWeight="bold" fontSize="20px">$ {formatNumber(income)}</StyledText>
+                    <StyledText color="white" fontWeight="bold" fontSize="20px" className='tracking-[-1px]'>$ {formatNumber(income)}</StyledText>
                 </View>
                 <View className="flex items-end">
                     <View className="flex flex-row my-2">
@@ -43,7 +43,7 @@ const BalanceCard = ({ totalBalance, income, expense }: BalanceCardProps) => {
                         </View>
                         <StyledText color="white">Expenses</StyledText>
                     </View>
-                    <StyledText color="white" fontWeight="bold" fontSize="20px">$ {formatNumber(expense)}</StyledText>
+                    <StyledText color="white" fontWeight="bold" fontSize="20px" className='tracking-[-1px]'>$ {formatNumber(expense)}</StyledText>
                 </View>
             </View>
         </Container>

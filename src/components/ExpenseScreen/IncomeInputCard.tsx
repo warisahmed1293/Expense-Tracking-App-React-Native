@@ -99,7 +99,7 @@ const IncomeInputCard: React.FC = () => {
     return (
         <>
 
-            <DisplayFlex justifyContent="space-between" alignItems="center" direction="column" className="pt-6 bg-white">
+            <DisplayFlex justifyContent="space-between" alignItems="center" direction="column" className="pt-3 bg-white">
                 <View className="my-3 w-72 h-[85px] justify-between">
                     <StyledText color="black">Name</StyledText>
                     <ExpenseDropdown

@@ -2,7 +2,7 @@
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import StatisticsScreen from "../screens/StatisticsScreen";
-import WalletScreen from "../screens/WalletScreen";
+import WalletScreen from "../screens/WalletScreen/WalletScreen";
 import { ICONS } from "../constant/icons";
 import Onboarding from "../screens/Onboarding";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
