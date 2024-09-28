@@ -15,11 +15,17 @@ import ExpenseScreen from '../screens/ExpenseScreen/ExpenseScreen';
 import ProfileScreen from '../screens/ProfileScreen/ProfileScreen';
 import SignupScreen from '../screens/SignupScreen';
 import TransactionReciptScreen from '../screens/TransactionReciptScreen/TransactionReciptScreen';
+import { enableScreens } from 'react-native-screens';
 
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
-
+enableScreens();
+const forFade = ({ current }) => ({
+    cardStyle: {
+        opacity: current.progress,
+    },
+});
 const CustomPlusButton: React.FC<{ onPress: (event: GestureResponderEvent) => void }> = ({ onPress }) => (
     <TouchableOpacity style={styles.plusButton} onPress={onPress}>
         <View>
@@ -61,7 +67,11 @@ const AppNavigator = () => {
     return (
         <Stack.Navigator
             initialRouteName="Onboarding"
-            screenOptions={{ headerShown: false }}
+            screenOptions={{
+                headerShown: false,
+                animation: "fade_from_bottom",
+
+            }}
         >
             <Stack.Screen name="Navigation" component={Navigation} />
             <Stack.Screen name="Onboarding" component={Onboarding} />
