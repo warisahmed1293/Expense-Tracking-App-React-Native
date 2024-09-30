@@ -53,18 +53,20 @@ const ExpenseDropdown: React.FC<CustomDropdownProps> = ({ items, onSelect, selec
             </TouchableOpacity>
             <Modal visible={isVisible} transparent={true} animationType="slide">
                 <TouchableOpacity className="flex-1" onPress={() => setIsVisible(false)} />
-                <View className="bg-white m-5 rounded-xl bottom-16 p-4">
+                <View className="bg-white m-2 rounded-xl bottom-16 p-4">
                     <FlatList
                         data={items}
                         keyExtractor={(item) => item.id.toString()}
                         scrollEnabled={true}
+                        numColumns={4} // Setting 4 items per row
                         renderItem={({ item }) => (
                             <TouchableOpacity
-                                className="flex-row items-center py-3 px-4 border-b border-gray-200"
+                                className="flex-1 items-center py-4 px-2"
                                 onPress={() => handleSelectItem(item)}
+                                style={{ flexBasis: "25%" }} // Ensures each item takes 25% of the width (4 columns)
                             >
                                 <Image source={item.icon} className="w-8 h-8" resizeMode="contain" />
-                                <Text className="ml-3 text-black text-base">{item.title}</Text>
+                                <Text className="mt-2 text-black text-base text-center text-[14px]">{item.title}</Text>
                             </TouchableOpacity>
                         )}
                     />

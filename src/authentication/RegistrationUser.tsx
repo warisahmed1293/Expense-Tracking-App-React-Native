@@ -23,6 +23,8 @@ const RegisterScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
     configureGoogleSignIn();
   }, []);
 
+
+
   const handleRegisterButton = () => {
     setLoading(true);
     handleRegister(name, email, password, profileImageUri, navigation).finally(() => setLoading(false));

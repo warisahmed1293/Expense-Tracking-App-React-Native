@@ -8,7 +8,7 @@ import COLORS from '../../constant/colors';
 type IconName = keyof typeof SolidIcons | keyof typeof OutlineIcons;
 
 interface ProfileTableProps {
-    icon?: IconName;
+    icon?: IconName | null | string;
     title: string;
 }
 

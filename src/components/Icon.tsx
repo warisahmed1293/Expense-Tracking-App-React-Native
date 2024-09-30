@@ -6,7 +6,7 @@ type IconName = keyof typeof SolidIcons | keyof typeof OutlineIcons;
 
 interface IconProps {
     type?: "solid" | "outline";
-    name: IconName;  // Use IconName to restrict to valid keys
+    name: IconName | string;  // Use IconName to restrict to valid keys
     size?: number;
     color?: string;
     className?: string;

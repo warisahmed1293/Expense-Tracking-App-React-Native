@@ -6,10 +6,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
 import COLORS from '../../constant/colors';
 import Icon from '../../components/Icon';
-import firestore from '@react-native-firebase/firestore';
-import storage from '@react-native-firebase/storage';
-import RNFS from 'react-native-fs';
-import { firebase } from '@react-native-firebase/auth';
+import { downloadReceipt, capitalizeTransactionType, formatNumber } from '.';
 
 type TransactionReciptScreenParams = {
     transactionId: string;
@@ -36,45 +33,10 @@ const TransactionReciptScreen: React.FC<TransactionReciptScreenRouteProps> = ({ 
     const [downloading, setDownloading] = useState(false);
     console.log(TransactionRecipt);
 
-    const downloadReceipt = async () => {
-        if (!TransactionRecipt) {
-            Alert.alert("Error", "No receipt available for this transaction.");
-            return;
-        }
-        try {
-            const user = firebase.auth().currentUser;
-            if (!user) {
-                Alert.alert("Error", "User not authenticated.");
-                return;
-            }
-
-            const receiptPath = `${user.uid}/${TransactionRecipt}`;
-            const receiptRef = storage().ref(receiptPath);
-            const url = await receiptRef.getDownloadURL();
-
-            const fileName = `receipt-${transactionId}.pdf`;
-            const localFilePath = `${RNFS.DocumentDirectoryPath}/${fileName}`;
-            const result = await RNFS.downloadFile({ fromUrl: url, toFile: localFilePath }).promise;
-            setDownloading(true);
-
-            result.statusCode === 200 ?
-                Alert.alert("Success", "Receipt downloaded successfully!") :
-                Alert.alert("Error", "Failed to download the receipt.");
-
-        } catch (error) {
-            console.error("Error downloading receipt:", error);
-            Alert.alert("Error", "An error occurred while downloading the receipt.");
-        } finally {
-            setDownloading(false);
-        }
-    };
-
-    const capitalizeTransactionType = () => {
-        return transactionType.charAt(0).toUpperCase() + transactionType.slice(1);
-    };
-
-    const formatNumber = (value: number) => {
-        return value.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    const handleDownloadReceipt = async () => {
+        setDownloading(true);
+        await downloadReceipt(TransactionRecipt, transactionId);
+        setDownloading(false);
     };
 
     return (
@@ -104,7 +66,7 @@ const TransactionReciptScreen: React.FC<TransactionReciptScreenRouteProps> = ({ 
                             { backgroundColor: 'rgba(76, 175, 80, 0.1)' } :
                             { backgroundColor: 'rgba(255, 0, 0, 0.1)' }}>
                             <StyledText color={transactionType === "income" ? COLORS.TRANSACTION_GREEN : COLORS.TRANSACTION_RED} fontSize="18px" fontWeight="semibold" className='text-center'>
-                                {capitalizeTransactionType()}
+                                {capitalizeTransactionType(transactionType)}
                             </StyledText>
                         </View>
                         <View className={`mt-3 items-center justify-center self-center`}>
@@ -124,7 +86,7 @@ const TransactionReciptScreen: React.FC<TransactionReciptScreenRouteProps> = ({ 
                     <View className='pt-8'>
                         <View className='justify-between items-center flex-row mb-6'>
                             <StyledText fontSize='18px' fontWeight='bold' color={COLORS.PRIMARY_GREY}>Status:</StyledText>
-                            <StyledText color={transactionType === "income" ? COLORS.TRANSACTION_GREEN : COLORS.TRANSACTION_RED} fontSize='18px' fontWeight='bold'>{capitalizeTransactionType()}</StyledText>
+                            <StyledText color={transactionType === "income" ? COLORS.TRANSACTION_GREEN : COLORS.TRANSACTION_RED} fontSize='18px' fontWeight='bold'>{capitalizeTransactionType(transactionType)}</StyledText>
                         </View>
                         <View className='justify-between items-center flex-row mb-6'>
                             <StyledText fontSize='18px' fontWeight='bold' color={COLORS.PRIMARY_GREY}>From:</StyledText>
@@ -142,7 +104,7 @@ const TransactionReciptScreen: React.FC<TransactionReciptScreenRouteProps> = ({ 
                     </View>
                     <TouchableOpacity
                         className="bg-transparent py-[16px] w-[100%] border border-[#DDDDDD] rounded-full self-center mt-10"
-                        onPress={downloadReceipt}
+                        onPress={handleDownloadReceipt}
                         disabled={downloading}
                     >
                         <StyledText className="text-center" color={COLORS.DARK_GREEN} fontWeight="bold" fontSize="20px">

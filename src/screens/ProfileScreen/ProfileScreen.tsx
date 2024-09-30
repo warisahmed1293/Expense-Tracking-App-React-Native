@@ -4,7 +4,7 @@ import { DisplayFlex, StyledText } from "../../components/styledComponents";
 import Icon from "../../components/Icon";
 import { NavigationProp } from "@react-navigation/native";
 import COLORS from "../../constant/colors";
-import { useProfileScreenLogic } from '.';
+import { pickImage, useProfileScreenLogic } from '.';
 import auth from "@react-native-firebase/auth";
 import ProfileTable from '../../components/ProfileScreen/ProfileTable';
 
@@ -13,10 +13,18 @@ type ProfileScreenProps = {
 };
 
 const ProfileScreen: React.FC<ProfileScreenProps> = ({ navigation }) => {
-    const { userName, handlerName, profileImage, loading, tableData } = useProfileScreenLogic();
+    const { userName, handlerName, profileImage, loading, tableData, } = useProfileScreenLogic();
+
     const [hasNotification] = React.useState<boolean>(true);
     const [isLoggingOut, setIsLoggingOut] = React.useState<boolean>(false);
     const [isSharing, setIsSharing] = React.useState<boolean>(false);
+    const [profileImageUri, setProfileImageUri] = React.useState<string | null>(profileImage);
+
+    console.log("ProfileScreen: profileImageUri", profileImageUri);
+
+    const handleImageChange = () => {
+        pickImage(setProfileImageUri, "camera");
+    };
 
     const handleLogout = async () => {
         setIsLoggingOut(true);
@@ -77,7 +85,14 @@ const ProfileScreen: React.FC<ProfileScreenProps> = ({ navigation }) => {
                             {loading ? (
                                 <ActivityIndicator size="large" color={COLORS.PRIMARY_BLACK} />
                             ) : (
-                                <Image source={{ uri: profileImage }} className="w-[100px] h-[100px] rounded-full" />
+                                <>
+                                    <View>
+                                        <Image source={{ uri: profileImageUri || profileImage }} className="w-[100px] h-[100px] rounded-full" />
+                                    </View>
+                                    <TouchableOpacity className='absolute top-24 right-1' onPress={handleImageChange}>
+                                        <Icon name="PlusCircleIcon" type="solid" size={34} color={COLORS.DARK_GREEN} />
+                                    </TouchableOpacity>
+                                </>
                             )}
                         </View>
                         {loading ? (

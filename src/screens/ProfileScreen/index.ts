@@ -3,6 +3,9 @@ import firestore, {
   FirebaseFirestoreTypes,
 } from '@react-native-firebase/firestore';
 import auth, {FirebaseAuthTypes} from '@react-native-firebase/auth';
+import {launchImageLibrary, launchCamera} from 'react-native-image-picker';
+import storage from '@react-native-firebase/storage';
+import {Alert} from 'react-native';
 
 export const useProfileScreenLogic = () => {
   const [userName, setUserName] = useState<string>('');
@@ -93,4 +96,57 @@ export const useProfileScreenLogic = () => {
     loading,
     tableData,
   };
+};
+
+export const pickImage = async (
+  setProfileImageUri: React.Dispatch<React.SetStateAction<string | null>>,
+  source: 'gallery' | 'camera',
+) => {
+  const options: any = {mediaType: 'photo'};
+
+  const handleResponse = async (response: any) => {
+    if (response.didCancel) {
+      console.log('User cancelled image picker');
+    } else if (response.errorMessage) {
+      console.error('Image Picker Error: ', response.errorMessage);
+    } else {
+      const uri = response.assets?.[0].uri || null;
+      if (uri) {
+        setProfileImageUri(uri);
+
+        const user = auth().currentUser;
+        if (user) {
+          try {
+            const storageRef = storage().ref(
+              `profile_pictures/${user.uid}.jpg`,
+            );
+            const task = storageRef.putFile(uri);
+            await task;
+            const downloadURL = await storageRef.getDownloadURL();
+            await firestore().collection('users').doc(user.uid).update({
+              profileImageUrl: downloadURL,
+            });
+
+            console.log('Profile image uploaded and URL saved to Firestore');
+            setProfileImageUri(downloadURL);
+          } catch (error) {
+            console.error(
+              'Error uploading image or updating Firestore:',
+              error,
+            );
+          }
+        }
+      }
+    }
+  };
+
+  if (source === 'gallery') {
+    // Launch image library
+    launchImageLibrary(options, handleResponse);
+  } else if (source === 'camera') {
+    // Launch camera
+    launchCamera(options, handleResponse);
+  } else {
+    Alert.alert('Invalid Option', 'Please choose a valid option.');
+  }
 };
