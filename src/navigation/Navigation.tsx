@@ -21,11 +21,6 @@ import { enableScreens } from 'react-native-screens';
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 enableScreens();
-const forFade = ({ current }) => ({
-    cardStyle: {
-        opacity: current.progress,
-    },
-});
 const CustomPlusButton: React.FC<{ onPress: (event: GestureResponderEvent) => void }> = ({ onPress }) => (
     <TouchableOpacity style={styles.plusButton} onPress={onPress}>
         <View>
